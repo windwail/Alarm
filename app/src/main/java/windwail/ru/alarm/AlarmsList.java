@@ -1,8 +1,11 @@
 package windwail.ru.alarm;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -13,15 +16,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AlarmsList extends AppCompatActivity {
+import windwail.ru.alarm.entities.AlarmItem;
 
-    ArrayList<String> list;
-    HashMap<String,String> map;
-    SimpleAdapter adapter;
-    ListView lv;
-    String[] from;
-    int[] to;
-    List<HashMap<String, String>> fillMaps;
+public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemClickListener
+{
+
+    public static final int NEW_ALARM = 1000;
+
+    public static String TAG = "AlarmList";
+
+    AlarmListAdapter adapter;
+
+    ListView listView;
+
+    List<AlarmItem> alarms;
 
 
     /** Called when the activity is first created. */
@@ -29,61 +37,34 @@ public class AlarmsList extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarms_list);
-        lv=(ListView) findViewById(R.id.alarms);
-        list=new ArrayList<String>(); //list of product id
-        list.add("pr100");
-        list.add("pr10");
-        list.add("pr1000");
-        list.add("px100");
 
-        map=new HashMap<String,String>();
-        map.put("pr100","300");
-        map.put("pr10","30");
-        map.put("pr1000","400");
-        map.put("px100","230");
+        alarms = AlarmItem.listAll(AlarmItem.class);
 
+        listView = (ListView) findViewById(R.id.alarms);
+        listView.setClickable(true);
 
-        // create the grid item mapping
-        String[] from = new String[] {"alarmName", "alarmInfo"};
-        int[] to = new int[] { R.id.alarmName, R.id.alarmInfo };
+        adapter = new AlarmListAdapter(this, R.layout.alarm_item, alarms);
 
-        // prepare the list of all records
-        fillMaps = new ArrayList<HashMap<String, String>>();
-        for(int i = 1; i <= list.size(); i++){
-            HashMap<String, String> map1 = new HashMap<String, String>();
-            map1.put("alarmName", "Alarm no " + i);
-            map1.put("alarmInfo", "Some numeric info!");
-            fillMaps.add(map1);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(this);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == NEW_ALARM) {
+            if (resultCode == RESULT_OK) {
+                adapter.updateAlarms();
+            }
         }
-
-        // fill in the grid_item layout
-        adapter = new SimpleAdapter(this, fillMaps, R.layout.alarm_item, from, to);
-        lv.setAdapter(adapter);
     }
 
+    public void onAdd(View v){
 
-    public void deleteRow(View v){
-        RelativeLayout llMain = (RelativeLayout)v.getParent();
-        TextView row=(TextView)llMain.getChildAt(0);
-        String row_no=row.getText().toString();
-        int row_no_int = Integer.parseInt(row_no);//get row number of deleted item from list
-        list.remove(row_no_int-1);
-        fillMaps.remove(row_no_int-1);
-        adapter.notifyDataSetChanged();
-
-    }
-
-    public void OnAdding(View v){
-        list.add("pz11");//adding new product id into list
-        map.put("pz11","30");//putting price of product id
-        int size=list.size();
-        HashMap<String, String> map1 = new HashMap<String, String>();
-        map1.put("rowid", "" + size);
-        map1.put("col_1",list.get(size-1));
-        map1.put("col_2", map.get(list.get(size-1)));
-        map1.put("col_3", "X");
-        fillMaps.add(map1);
-        adapter.notifyDataSetChanged();//refreshing adapter
+        Intent myIntent = new Intent(v.getContext(), AlarmDetails.class);
+        startActivityForResult(myIntent, NEW_ALARM);
     }
 
 
@@ -116,5 +97,16 @@ public class AlarmsList extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent myIntent = new Intent(view.getContext(), AlarmDetails.class);
+
+        AlarmItem alarm = ((AlarmListAdapter.DataHandler)view.getTag()).alarm;
+
+        myIntent.putExtra("alarm_id",alarm.getId());
+
+        startActivityForResult(myIntent, NEW_ALARM);
     }
 }
