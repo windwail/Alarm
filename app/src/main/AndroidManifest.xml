@@ -9,34 +9,63 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-        <meta-data android:name="DATABASE"  android:value="alarm.db" />
-        <meta-data android:name="VERSION"   android:value="4" />
-        <meta-data android:name="QUERY_LOG"  android:value="true" />
-        <meta-data  android:name="DOMAIN_PACKAGE_NAME" android:value="windwail.ru.alarm" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="alarm.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="5" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="windwail.ru.alarm" />
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"
+            >
 
-        <receiver android:name=".AlarmReceiver" />
+        </activity>
+
+        <receiver android:name=".AlarmReceiver"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+
+        <!--
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+        -->
 
         <service
             android:name=".RingtonePlayingService"
             android:enabled="true" />
 
-        <activity android:name=".AlarmsList">
+        <activity android:name=".AlarmsList"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity android:name=".AlarmDetails"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
 
+        <activity android:name=".AlarmTest"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait">
 
-        <activity android:name=".AlarmDetails"></activity>
+        </activity>
     </application>
 
 </manifest>

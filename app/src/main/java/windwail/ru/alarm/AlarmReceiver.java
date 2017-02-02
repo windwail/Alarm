@@ -16,9 +16,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         long alarm_id = intent.getLongExtra("alarm_id", -1);
         String alarm_file = intent.getStringExtra("alarm_file");
-        Log.e("AlarmReceiver", "Alarm triggered :"+alarm_id);
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(context, Uri.parse(alarm_file));
-        mediaPlayer.start();
+
+        Intent serviceIntent = new Intent(context, RingtonePlayingService.class);
+        serviceIntent.putExtra("alarm_id", alarm_id);
+        serviceIntent.putExtra("alarm", true);
+        serviceIntent.putExtra("alarm_file", alarm_file);
+        context.startService(serviceIntent);
     }
 }

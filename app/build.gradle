@@ -38,4 +38,5 @@ dependencies {
     compile 'com.code-troopers.betterpickers:library:3.1.0'
     compile 'com.github.angads25:filepicker:1.0.6'
     compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'net.danlew:android.joda:2.9.5.1'
 }

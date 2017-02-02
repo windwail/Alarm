@@ -3,6 +3,7 @@ package windwail.ru.alarm;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,16 +23,28 @@ public class RingtonePlayingService extends Service {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
 
         boolean alarm = intent.getBooleanExtra("alarm", false);
+        long alarm_id = intent.getLongExtra("alarm_id", -1);
+        String alarm_file = intent.getStringExtra("alarm_file");
 
         Log.e("Finally in service "+alarm, "RingtonePlayingService");
 
         if(alarm) {
 
             if(is_playing) {
-
+                // Останавливаем то, что играло.
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                is_playing = false;
             } else {
-                mediaPlayer  = MediaPlayer.create(this, R.raw.iphone_donald_trump);
+                mediaPlayer  = MediaPlayer.create(this, Uri.parse(alarm_file));
                 mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        is_playing = false;
+                        mediaPlayer.release();
+                    }
+                });
                 is_playing = true;
             }
 
@@ -42,7 +55,7 @@ public class RingtonePlayingService extends Service {
                 mediaPlayer.release();
                 is_playing = false;
             } else {
-
+                // Ничего и так не играет.
             }
 
         }

@@ -18,7 +18,7 @@
         android:onClick="onAdd"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toStartOf="@+id/stopAlarm" />
 
     <ListView
         android:layout_width="match_parent"
@@ -28,4 +28,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/addButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stopAlarm"
+        android:text="Остановить"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onStopAlarm" />
 </RelativeLayout>

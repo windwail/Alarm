@@ -15,11 +15,16 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import windwail.ru.alarm.entities.AlarmItem;
 
@@ -38,6 +43,9 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
     AlarmManager alarmManager;
 
+    Intent alarmReceiverIntent;
+
+    PendingIntent pendingIntent;
 
     /** Called when the activity is first created. */
     @Override
@@ -66,22 +74,27 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                 if(alarm_id >= 0) {
                     AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
-                    Calendar calendar = Calendar.getInstance();
 
-                    calendar.set(Calendar.MINUTE, alarm.getStartMinute());
-                    calendar.set(Calendar.HOUR, alarm.getStartHour());
-                    calendar.set(Calendar.SECOND, 0);
+                    DateTime calendar = DateTime.now();
 
+                    calendar = calendar.withMinuteOfHour(alarm.getStartMinute());
+                    calendar = calendar.withHourOfDay(alarm.getStartHour());
+                    calendar = calendar.withSecondOfMinute(0);
 
-                    Intent alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
+                    DateFormat df = DateFormat.getDateTimeInstance();
+                    Log.e("ALARM SET:", df.format(calendar.toDate()));
+
+                    alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
 
                     alarmReceiverIntent.putExtra("alarm_id", alarm_id);
                     alarmReceiverIntent.putExtra("alarm_file", alarm.file);
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                            alarmReceiverIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+                    pendingIntent = PendingIntent.getBroadcast(this, 0,
+                            alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
 
-                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+
+
 
                     Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
                 }
@@ -94,6 +107,12 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         Intent myIntent = new Intent(v.getContext(), AlarmDetails.class);
         startActivityForResult(myIntent, NEW_ALARM);
+    }
+
+    public void onStopAlarm(View v) {
+        Intent serviceIntent = new Intent(this, RingtonePlayingService.class);
+        serviceIntent.putExtra("alarm", false);
+        startService(serviceIntent);
     }
 
 

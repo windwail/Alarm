@@ -82,8 +82,16 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
         }
 
         handler.alarmName.setText(alarm.getTitle());
-        handler.alarmInfo.setText(alarm.getStartHour() + ":" + alarm.getStartMinute());
+        handler.alarmInfo.setText(pad(alarm.getStartHour()) + ":" + pad(alarm.getStartMinute()));
 
         return row;
     }
+
+    private static String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+    }
+
 }
