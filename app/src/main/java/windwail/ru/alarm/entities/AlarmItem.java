@@ -2,17 +2,11 @@ package windwail.ru.alarm.entities;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by icetsuk on 01.02.17.
- */
-
 public class AlarmItem extends SugarRecord {
 
     public String title = "";
-
     public Integer startHour = 0;
     public Integer startMinute = 0;
-
     public String file= "";
 
     public String getTitle() {
@@ -46,4 +40,5 @@ public class AlarmItem extends SugarRecord {
     public void setFile(String file) {
         this.file = file;
     }
+
 }

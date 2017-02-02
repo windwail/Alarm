@@ -25,7 +25,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
     public void updateAlarms() {
         alarms = AlarmItem.listAll(AlarmItem.class);
-        notifyDataSetInvalidated();
+        notifyDataSetChanged();
     }
 
     public AlarmListAdapter(Context context, int resource, List<AlarmItem> processes) {

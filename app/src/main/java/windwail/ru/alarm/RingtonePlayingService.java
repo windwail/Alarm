@@ -1,12 +1,9 @@
 package windwail.ru.alarm;
 
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -49,11 +46,6 @@ public class RingtonePlayingService extends Service {
             }
 
         }
-
-
-
-
-
 
         return START_NOT_STICKY;
     }
