@@ -86,6 +86,8 @@ public class AlarmDetails extends AppCompatActivity {
         alarm.title = alarmName.getText().toString();
         alarm.save();
         Intent intent = this.getIntent();
+        intent.putExtra("alarm_id", alarm.getId());
+
         this.setResult(RESULT_OK, intent);
         finish();
     }

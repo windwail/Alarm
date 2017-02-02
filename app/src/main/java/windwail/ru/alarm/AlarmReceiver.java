@@ -3,6 +3,8 @@ package windwail.ru.alarm;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -12,15 +14,11 @@ import android.util.Log;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("We are in the receiver!", "Yay");
+        long alarm_id = intent.getLongExtra("alarm_id", -1);
+        String alarm_file = intent.getStringExtra("alarm_file");
+        Log.e("AlarmReceiver", "Alarm triggered :"+alarm_id);
 
-        boolean alarm = intent.getBooleanExtra("alarm",false);
-
-        Log.e("ALARM: "+alarm, "AlarmReciever");
-
-        Intent sreviceIntent = new Intent(context, RingtonePlayingService.class);
-        sreviceIntent.putExtra("alarm", alarm);
-
-        context.startService(sreviceIntent);
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, Uri.parse(alarm_file));
+        mediaPlayer.start();
     }
 }
