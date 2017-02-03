@@ -1,111 +1,380 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_alarm_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="windwail.ru.alarm.AlarmDetails">
 
-    <TextView
-        android:text="Название будильника"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:id="@+id/alarmName"
-        android:hint="введите название"
-        />
 
-    <Button
-        android:text="Установить"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/saveButton"
-        android:onClick="onSaveAlarm"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:orientation="vertical">
 
-    <TextView
-        android:text="Первое срабатывание"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/alarmName"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Будильник 1"
+            android:ems="10"
+            android:id="@+id/editText3"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:textColorLink="#000000" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/startTime"
-        android:hint="время"
-        android:inputType="none"
-        android:editable="false"
-        />
+        <TextView
+            android:text="Время срабатывания:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/editText3"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp" />
 
-    <Button
-        android:text="..."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/startTime"
-        android:layout_toEndOf="@+id/startTime"
-        android:id="@+id/button2"
-        android:onClick="onSetStartTime" />
+        <LinearLayout android:layout_height="180dp" android:layout_width="match_parent" android:orientation="horizontal"
+            android:layout_below="@+id/textView9"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp">
 
-    <TextView
-        android:text="Трек для проигрывания"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView3" />
+            <biz.kasual.materialnumberpicker.MaterialNumberPicker
+                app:npMinValue="0"
+                app:npMaxValue="23"
+                app:npDefaultValue="10"
+                app:npBackgroundColor="#ffffff"
+                app:npSeparatorColor="#000000"
+                app:npTextColor="#000000"
+                android:textStyle="normal"
+                app:npTextSize="35sp"
+                android:layout_weight="1"
+                android:layout_width="120dp"
+                android:layout_height="180dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="180dp"
+                android:padding="2dp"
+                android:layout_width="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/textView6"
+                    android:layout_weight="1"
+                    android:layout_height="70dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_height="90dp"
+                    android:clickable="true"
+                    app:fabSize="mini"
+                    android:id="@+id/floatingActionButton1"
+                    android:layout_weight="1"
+                    app:backgroundTint="#000000"
+                    android:layout_width="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/textView7"
+                    android:layout_weight="1"
+                    android:layout_height="15dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_height="90dp"
+                    android:clickable="true"
+                    app:fabSize="mini"
+                    android:id="@+id/floatingActionButton2"
+                    android:layout_weight="1"
+                    app:backgroundTint="#000000"
+                    android:layout_width="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/textView8"
+                    android:layout_weight="1"
+                    android:layout_height="70dp" />
+            </LinearLayout>
+
+            <biz.kasual.materialnumberpicker.MaterialNumberPicker
+                app:npMinValue="0"
+                app:npMaxValue="59"
+                app:npDefaultValue="10"
+                app:npBackgroundColor="#ffffff"
+                app:npSeparatorColor="#000000"
+                app:npTextColor="#000000"
+                android:textStyle="bold"
+                app:npTextSize="35sp"
+                android:layout_weight="1"
+                android:layout_width="120dp"
+                android:layout_height="180dp" />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+
+        <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/fileName"
         android:hint="Выберите файл"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:inputType="none"
         android:editable="false"
-        />
+        android:layout_above="@+id/chooseFile"
+        android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="Проиграть"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/playButton"
-        android:layout_below="@+id/fileName"
-        android:layout_alignParentStart="true"
-        android:onClick="onTestPlay" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:text="Выбрать"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button4"
-        android:onClick="onChooseFile"
-        android:layout_alignBaseline="@+id/playButton"
-        android:layout_alignBottom="@+id/playButton"
-        android:layout_toEndOf="@+id/playButton" />
+            <Button
+            android:text="Проиграть"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playButton"
+            android:onClick="onTestPlay"
+                android:layout_weight="1" />
 
-</RelativeLayout>
+            <Button
+            android:text="Выбрать"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chooseFile"
+            android:onClick="onChooseFile"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <Button
+            android:text="Сохранить будильник"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:text="Повторы"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_marginTop="20dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#000000"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:text="Начало секции: 02:20"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/sectionStart1"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:text="К-во повторов:"
+            android:id="@+id/sectinRepeatLabel1"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionRepeat1"
+            android:layout_width="50dp"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:text="Интервал:"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView3" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionInterval"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#000000"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
+
+
+        <TextView
+            android:text="Начало секции: 02:20"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/sectionStart2"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:text="К-во повторов:"
+            android:id="@+id/sectinRepeatLabel2"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionRepeat2"
+            android:layout_width="50dp"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:text="Интервал:"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView2" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionInterval2"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#000000"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
+
+
+        <TextView
+            android:text="Начало секции: 02:20"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/sectionStart3"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:text="К-во повторов:"
+            android:id="@+id/sectinRepeatLabel3"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionRepeat3"
+            android:layout_width="50dp"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:text="Интервал:"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView33" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionInterval3"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#000000"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
+
+
+        <TextView
+            android:text="Начало секции: 02:20"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/sectionStart4"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:text="К-во повторов:"
+            android:id="@+id/sectinRepeatLabel4"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionRepeat4"
+            android:layout_width="50dp"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:text="Интервал:"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView4" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sectionInterval4"
+            android:text="0"
+            android:layout_height="50dp"
+            />
+
+
+        <Button
+            android:text="Сохранить будильник"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2" />
+
+
+    </LinearLayout>
+</ScrollView>

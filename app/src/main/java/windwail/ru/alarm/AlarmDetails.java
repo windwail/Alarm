@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,7 +37,6 @@ public class AlarmDetails extends AppCompatActivity {
 
     private Button playButton;
 
-    private EditText startTime;
     private EditText audioFile;
     private EditText alarmName;
 
@@ -46,13 +46,13 @@ public class AlarmDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_details);
 
-        startTime = (EditText) findViewById(R.id.startTime);
         audioFile = (EditText) findViewById(R.id.fileName);
         playButton = (Button) findViewById(R.id.playButton);
-        alarmName = (EditText) findViewById(R.id.alarmName);
+        //alarmName = (EditText) findViewById(R.id.alarmName);
 
         long alarm_id = getIntent().getLongExtra("alarm_id", -1);
 
@@ -61,7 +61,7 @@ public class AlarmDetails extends AppCompatActivity {
         } else {
             alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
             alarmName.setText(alarm.getTitle());
-            startTime.setText(pad(alarm.startHour)+":"+pad(alarm.startMinute));
+            //startTime.setText(pad(alarm.startHour)+":"+pad(alarm.startMinute));
             audioFile.setText(alarm.file);
         }
 
@@ -74,10 +74,12 @@ public class AlarmDetails extends AppCompatActivity {
             Toast.makeText(this, "Введите имя будильника", Toast.LENGTH_SHORT).show();
             return;
         }
+        /*
         if (startTime.getText().toString().trim().length() <= 0) {
             Toast.makeText(this, "Не указано время", Toast.LENGTH_SHORT).show();
             return;
         }
+        */
         if (audioFile.getText().toString().trim().length() <= 0) {
             Toast.makeText(this, "Не указан файл", Toast.LENGTH_SHORT).show();
             return;
@@ -104,7 +106,7 @@ public class AlarmDetails extends AppCompatActivity {
             public void onTimeSet(RadialTimePickerDialogFragment dialog, int h, int m) {
                 alarm.startHour = h;
                 alarm.startMinute = m;
-                startTime.setText(pad(h)+":"+pad(m));
+                //startTime.setText(pad(h)+":"+pad(m));
             }
         });
         rtpd.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
@@ -185,5 +187,7 @@ public class AlarmDetails extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
