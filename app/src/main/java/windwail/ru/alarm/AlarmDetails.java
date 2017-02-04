@@ -7,11 +7,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
@@ -20,9 +26,14 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 
+import org.joda.time.DateTime;
+import org.joda.time.DurationFieldType;
+
 import java.io.File;
 
+import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 import windwail.ru.alarm.entities.AlarmItem;
+
 
 public class AlarmDetails extends AppCompatActivity {
 
@@ -40,9 +51,82 @@ public class AlarmDetails extends AppCompatActivity {
     private EditText audioFile;
     private EditText alarmName;
 
+    private MaterialNumberPicker alarmHour, alarmMinute;
+
     private MediaPlayer mediaPlayer;
 
+    private TextView sectionStart1;
+    private TextView sectionStart2;
+    private TextView sectionStart3;
+    private TextView sectionStart4;
+
+    private TextView sectionInterval1;
+    private TextView sectionInterval2;
+    private TextView sectionInterval3;
+    private TextView sectionInterval4;
+
+    private TextView sectionCount1;
+    private TextView sectionCount2;
+    private TextView sectionCount3;
+    private TextView sectionCount4;
+
+    private CheckBox background;
+
     private boolean isPlaying;
+
+
+    private void setRepeatSectionsFromAlarm() {
+        sectionStart1.setText(pad(alarm.getStartHour())+":"+pad(alarm.getStartMinute()));
+        sectionStart2.setText(pad(alarm.getRepeatStartHour2())+":"+pad(alarm.getRepeatStartMinute2()));
+        sectionStart3.setText(pad(alarm.getRepeatStartHour3())+":"+pad(alarm.getRepeatStartMinute3()));
+        sectionStart4.setText(pad(alarm.getRepeatStartHour4())+":"+pad(alarm.getRepeatStartMinute4()));
+
+        sectionCount1.setText(""+alarm.getRepeatCount1());
+        sectionCount2.setText(""+alarm.getRepeatCount2());
+        sectionCount3.setText(""+alarm.getRepeatCount3());
+        sectionCount4.setText(""+alarm.getRepeatCount4());
+
+        sectionInterval1.setText(""+alarm.getRepeatInterval1());
+        sectionInterval2.setText(""+alarm.getRepeatInterval2());
+        sectionInterval3.setText(""+alarm.getRepeatInterval3());
+        sectionInterval4.setText(""+alarm.getRepeatInterval4());
+
+
+    }
+
+    private void setStartSections() {
+
+        alarm.setRepeatCount1(Integer.parseInt(sectionCount1.getText().toString()));
+        alarm.setRepeatCount2(Integer.parseInt(sectionCount2.getText().toString()));
+        alarm.setRepeatCount3(Integer.parseInt(sectionCount3.getText().toString()));
+        alarm.setRepeatCount4(Integer.parseInt(sectionCount4.getText().toString()));
+
+        alarm.setRepeatInterval1(Integer.parseInt(sectionInterval1.getText().toString()));
+        alarm.setRepeatInterval2(Integer.parseInt(sectionInterval2.getText().toString()));
+        alarm.setRepeatInterval3(Integer.parseInt(sectionInterval3.getText().toString()));
+        alarm.setRepeatInterval4(Integer.parseInt(sectionInterval4.getText().toString()));
+
+        DateTime dt = (new DateTime()).withTime(alarm.getStartHour(), alarm.getStartMinute(), 0, 0);
+
+        dt = dt.plusMinutes(alarm.getRepeatCount1()*alarm.getRepeatInterval1());
+
+        alarm.setRepeatStartHour2(dt.getHourOfDay());
+        alarm.setRepeatStartMinute2(dt.getMinuteOfHour());
+        sectionStart2.setText(pad(dt.getHourOfDay())+":"+pad(dt.getMinuteOfHour()));
+
+        dt = dt.plusMinutes(alarm.getRepeatCount2()*alarm.getRepeatInterval2());
+
+        alarm.setRepeatStartHour3(dt.getHourOfDay());
+        alarm.setRepeatStartMinute3(dt.getMinuteOfHour());
+        sectionStart3.setText(pad(dt.getHourOfDay())+":"+pad(dt.getMinuteOfHour()));
+
+        dt = dt.plusMinutes(alarm.getRepeatCount3()*alarm.getRepeatInterval3());
+
+        alarm.setRepeatStartHour4(dt.getHourOfDay());
+        alarm.setRepeatStartMinute4(dt.getMinuteOfHour());
+        sectionStart4.setText(pad(dt.getHourOfDay())+":"+pad(dt.getMinuteOfHour()));
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +136,99 @@ public class AlarmDetails extends AppCompatActivity {
 
         audioFile = (EditText) findViewById(R.id.fileName);
         playButton = (Button) findViewById(R.id.playButton);
-        //alarmName = (EditText) findViewById(R.id.alarmName);
+        alarmName = (EditText) findViewById(R.id.alarmName);
+        alarmHour = (MaterialNumberPicker) findViewById(R.id.alarmHour);
+        alarmMinute = (MaterialNumberPicker) findViewById(R.id.alarmMinute);
+
+        background = (CheckBox) findViewById(R.id.background);
+
+
+
+        sectionStart1 = (TextView) findViewById(R.id.sectionStart1);
+        sectionStart2 = (TextView) findViewById(R.id.sectionStart2);
+        sectionStart3 = (TextView) findViewById(R.id.sectionStart3);
+        sectionStart4 = (TextView) findViewById(R.id.sectionStart4);
+
+
+        sectionInterval1 = (TextView) findViewById(R.id.sectionInterval1);
+        sectionInterval2 = (TextView) findViewById(R.id.sectionInterval2);
+        sectionInterval3 = (TextView) findViewById(R.id.sectionInterval3);
+        sectionInterval4 = (TextView) findViewById(R.id.sectionInterval4);
+
+        sectionCount1 = (TextView) findViewById(R.id.sectionRepeat1);
+        sectionCount2 = (TextView) findViewById(R.id.sectionRepeat2);
+        sectionCount3 = (TextView) findViewById(R.id.sectionRepeat3);
+        sectionCount4 = (TextView) findViewById(R.id.sectionRepeat4);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                    Integer.parseInt(s.toString());
+                    setStartSections();
+                } catch (Exception ex) {
+
+                }
+
+            }
+        };
+
+        NumberPicker.OnValueChangeListener updateRepeatTime = new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                sectionStart1.setText(pad(alarmHour.getValue())+":"+pad(alarmMinute.getValue()));
+                alarm.setStartHour(alarmHour.getValue());
+                alarm.setStartMinute(alarmMinute.getValue());
+            }
+        };
+
+        alarmMinute.setOnValueChangedListener(updateRepeatTime);
+        alarmHour.setOnValueChangedListener(updateRepeatTime);
 
         long alarm_id = getIntent().getLongExtra("alarm_id", -1);
 
         if(alarm_id < 0) {
             alarm = new AlarmItem();
+
+            DateTime dt = DateTime.now();
+
+            alarm.setStartHour(dt.getHourOfDay());
+            alarm.setStartMinute(dt.getMinuteOfHour());
+
+
         } else {
             alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
             alarmName.setText(alarm.getTitle());
             //startTime.setText(pad(alarm.startHour)+":"+pad(alarm.startMinute));
             audioFile.setText(alarm.file);
+
+            setRepeatSectionsFromAlarm();
+            background.setChecked(alarm.background);
         }
+
+        alarmHour.setValue(alarm.getStartHour());
+        alarmMinute.setValue(alarm.getStartMinute());
+        sectionStart1.setText(pad(alarmHour.getValue())+":"+pad(alarmMinute.getValue()));
+
+        sectionInterval1.addTextChangedListener(textWatcher);
+        sectionInterval2.addTextChangedListener(textWatcher);
+        sectionInterval3.addTextChangedListener(textWatcher);
+        sectionInterval4.addTextChangedListener(textWatcher);
+
+        sectionCount1.addTextChangedListener(textWatcher);
+        sectionCount2.addTextChangedListener(textWatcher);
+        sectionCount3.addTextChangedListener(textWatcher);
+        sectionCount4.addTextChangedListener(textWatcher);
 
     }
 
@@ -74,18 +239,14 @@ public class AlarmDetails extends AppCompatActivity {
             Toast.makeText(this, "Введите имя будильника", Toast.LENGTH_SHORT).show();
             return;
         }
-        /*
-        if (startTime.getText().toString().trim().length() <= 0) {
-            Toast.makeText(this, "Не указано время", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        */
+
         if (audioFile.getText().toString().trim().length() <= 0) {
             Toast.makeText(this, "Не указан файл", Toast.LENGTH_SHORT).show();
             return;
         }
 
         alarm.title = alarmName.getText().toString();
+        alarm.background = background.isChecked();
         alarm.save();
         Intent intent = this.getIntent();
         intent.putExtra("alarm_id", alarm.getId());

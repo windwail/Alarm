@@ -13,7 +13,7 @@
         android:inputType="textPersonName"
         android:text="Будильник 1"
         android:ems="10"
-        android:id="@+id/editText3"
+        android:id="@+id/alarmName"
         android:textAlignment="center"
         android:textColor="#9b92b3"
         android:textSize="20sp"
@@ -44,7 +44,7 @@
         android:fontFamily="sans-serif"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_below="@+id/editText3"
+        android:layout_below="@+id/alarmName"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp" />
 

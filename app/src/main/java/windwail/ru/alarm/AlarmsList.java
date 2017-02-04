@@ -15,6 +15,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.joda.time.DateTime;
 
 import java.text.DateFormat;
@@ -52,7 +54,14 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarms_list);
-        alarms = AlarmItem.listAll(AlarmItem.class);
+
+        try {
+            alarms = AlarmItem.listAll(AlarmItem.class);
+        } catch (Exception ex) {
+            alarms = new ArrayList<>();
+        }
+
+
         listView = (ListView) findViewById(R.id.alarms);
         listView.setClickable(true);
         adapter = new AlarmListAdapter(this, R.layout.alarm_item, alarms);
@@ -88,6 +97,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                     alarmReceiverIntent.putExtra("alarm_id", alarm_id);
                     alarmReceiverIntent.putExtra("alarm_file", alarm.file);
+                    alarmReceiverIntent.putExtra("alarmJSON", new Gson().toJson(alarm) );
 
                     pendingIntent = PendingIntent.getBroadcast(this, 0,
                             alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);

@@ -24,12 +24,16 @@
             android:inputType="textPersonName"
             android:text="Будильник 1"
             android:ems="10"
-            android:id="@+id/editText3"
+            android:id="@+id/alarmName"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
-            android:textColorLink="#000000" />
+            android:textColorLink="#000000"
+
+            android:nextFocusUp="@id/alarmName"
+            android:nextFocusLeft="@id/alarmName"
+            />
 
         <TextView
             android:text="Время срабатывания:"
@@ -42,7 +46,7 @@
             android:fontFamily="sans-serif"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_below="@+id/editText3"
+            android:layout_below="@+id/alarmName"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp" />
 
@@ -62,7 +66,8 @@
                 app:npTextSize="35sp"
                 android:layout_weight="1"
                 android:layout_width="120dp"
-                android:layout_height="180dp" />
+                android:layout_height="180dp"
+                android:id="@+id/alarmHour" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -118,7 +123,8 @@
                 app:npTextSize="35sp"
                 android:layout_weight="1"
                 android:layout_width="120dp"
-                android:layout_height="180dp" />
+                android:layout_height="180dp"
+                android:id="@+id/alarmMinute" />
 
 
 
@@ -166,12 +172,19 @@
         </LinearLayout>
 
 
+        <CheckBox
+            android:text="Фоновый будильник"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/background" />
+
         <Button
             android:text="Сохранить будильник"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:onClick="onSaveAlarm" />
 
         <TextView
             android:text="Повторы"
@@ -191,7 +204,7 @@
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:text="Начало секции: 02:20"
+            android:text="02:20"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:id="@+id/sectionStart1"
@@ -222,7 +235,7 @@
             android:layout_width="50dp"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/sectionInterval"
+            android:id="@+id/sectionInterval1"
             android:text="0"
             android:layout_height="50dp"
             />
@@ -238,7 +251,7 @@
 
 
         <TextView
-            android:text="Начало секции: 02:20"
+            android:text="02:20"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:id="@+id/sectionStart2"
@@ -285,7 +298,7 @@
 
 
         <TextView
-            android:text="Начало секции: 02:20"
+            android:text="02:20"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:id="@+id/sectionStart3"
@@ -332,7 +345,7 @@
 
 
         <TextView
-            android:text="Начало секции: 02:20"
+            android:text="02:20"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:id="@+id/sectionStart4"
@@ -373,7 +386,8 @@
             android:text="Сохранить будильник"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button2" />
+            android:id="@+id/button2"
+            android:onClick="onSaveAlarm"/>
 
 
     </LinearLayout>
