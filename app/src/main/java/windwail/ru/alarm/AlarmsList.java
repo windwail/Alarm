@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import windwail.ru.alarm.entities.AlarmConfig;
 import windwail.ru.alarm.entities.AlarmItem;
 
 public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemClickListener
@@ -61,24 +62,27 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        new AlertDialog.Builder(this)
-                .setTitle("Caution/Предупреждение")
-                .setMessage(
-                        "Эта программа была написана автором для себя, используйте ее на свой страх и риск. Автор снимает с себя ответственность за проблемы связанные с использованием данной программы.\n" +
-                                "This application is distributes as is. It is written for myself and i'm not responsible of problems you'll face using this app. " )
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        AlarmsList.this.finish();
-                        System.exit(0);
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        if(!AlarmConfig.getInstance().getRulesAccepted()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Caution/Предупреждение")
+                    .setMessage(
+                            "Эта программа была написана автором для себя, используйте ее на свой страх и риск. Автор снимает с себя ответственность за проблемы связанные с использованием данной программы.\n" +
+                                    "This application is distributes as is. It is written for myself and i'm not responsible of problems you'll face using this app. ")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            AlarmConfig.getInstance().setRulesAccepted(true);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            AlarmsList.this.finish();
+                            System.exit(0);
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }
 
 
     }

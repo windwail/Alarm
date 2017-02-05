@@ -265,13 +265,27 @@
             android:layout_height="wrap_content"
             android:id="@+id/notification" />
 
-        <Button
-            android:text="Сохранить будильник"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button"
-            android:layout_marginTop="10dp"
-            android:onClick="onSaveAlarm" />
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="Сохранить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button5"
+                android:layout_weight="1"
+                android:onClick="onSaveAlarm" />
+
+            <Button
+                android:text="Установить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button"
+                android:layout_weight="1"
+                android:onClick="onSetAlarm"/>
+        </LinearLayout>
 
         <TextView
             android:text="Повторы"
@@ -698,12 +712,25 @@
         </LinearLayout>
 
 
-        <Button
-            android:text="Сохранить будильник"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:onClick="onSaveAlarm"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="Сохранить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onSaveAlarm" />
+
+            <Button
+                android:text="Установить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onSetAlarm"/>
+        </LinearLayout>
 
 
     </LinearLayout>

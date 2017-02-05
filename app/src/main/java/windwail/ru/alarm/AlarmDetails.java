@@ -318,8 +318,8 @@ public class AlarmDetails extends AppCompatActivity {
     public void onSaveAlarm(View v) {
 
         if (audioFile.getText().toString().trim().length() <= 0
-                && !notify.isChecked()) {
-            Toast.makeText(this, "Не указан файл", Toast.LENGTH_SHORT).show();
+                && !notify.isChecked() && !vibro1.isChecked()) {
+            Toast.makeText(this, "Не указан файл|вибро|нотификация", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -352,6 +352,13 @@ public class AlarmDetails extends AppCompatActivity {
         alarm.setVibroRepeat4(Integer.parseInt(vibroRepeat4.getText().toString()));
 
         alarm.save();
+
+    }
+
+    public void onSetAlarm(View v) {
+
+        onSaveAlarm(v);
+
         Intent intent = this.getIntent();
         intent.putExtra("alarm_id", alarm.getId());
 
