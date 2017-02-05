@@ -50,7 +50,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp" />
 
-        <LinearLayout android:layout_height="180dp" android:layout_width="match_parent" android:orientation="horizontal"
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal"
             android:layout_below="@+id/textView9"
             android:layout_alignParentStart="true"
             android:layout_marginTop="4dp">
@@ -131,12 +131,99 @@
         </LinearLayout>
 
 
+        <TextView
+            android:text="Громкость"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView10"
+            android:textAlignment="center"
+            android:textColor="@color/bpDark_gray" />
+
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="10"
+            android:id="@+id/volume1" />
+
+        <TextView
+            android:text="Вибрация"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vibroLabel1"
+            android:textAlignment="center"
+            android:textColor="#000000" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <CheckBox
+                android:text="Вибрация"
+                android:layout_height="wrap_content"
+                android:id="@+id/vibro1"
+                android:layout_weight="1"
+                android:layout_width="70dp" />
+
+            <TextView
+                android:text="L:"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView12"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:id="@+id/vibroLenth1"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="T:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13"
+                android:layout_weight="1"
+                android:textAlignment="textEnd" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/vibroInterval1"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="R:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView14"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/vibroRepeat1"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:text="1"
+                android:layout_width="20dp" />
+
         </LinearLayout>
+
+        <Button
+            android:text="Тест вибрации"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button4"
+            android:onClick="onVibroTest" />
 
         <EditText
         android:layout_width="match_parent"
@@ -173,10 +260,10 @@
 
 
         <CheckBox
-            android:text="Фоновый будильник"
+            android:text="Оповещения"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/background" />
+            android:id="@+id/notification" />
 
         <Button
             android:text="Сохранить будильник"
@@ -240,7 +327,6 @@
             android:layout_height="50dp"
             />
 
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dip"
@@ -287,6 +373,81 @@
             android:layout_height="50dp"
             />
 
+        <TextView
+            android:text="Громкость"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView102"
+            android:textAlignment="center"
+            android:textColor="@color/bpDark_gray" />
+
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3"
+            android:id="@+id/volume2"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:text="Вибрация"
+                android:layout_height="wrap_content"
+                android:id="@+id/vibro2"
+                android:layout_weight="1"
+                android:layout_width="70dp" />
+
+            <TextView
+                android:text="L:"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:id="@+id/vibroLenth2"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="T:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/vibroInterval2"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="R:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/vibroRepeat2"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:text="1"
+                android:layout_width="20dp" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -319,6 +480,8 @@
             android:layout_height="50dp"
             />
 
+
+
         <TextView
             android:text="Интервал:"
             android:layout_width="wrap_content"
@@ -333,6 +496,83 @@
             android:text="0"
             android:layout_height="50dp"
             />
+
+
+        <TextView
+            android:text="Громкость"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView103"
+            android:textAlignment="center"
+            android:textColor="@color/bpDark_gray" />
+
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3"
+            android:id="@+id/volume3"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:text="Вибрация"
+                android:layout_height="wrap_content"
+                android:id="@+id/vibro3"
+                android:layout_weight="1"
+                android:layout_width="70dp" />
+
+            <TextView
+                android:text="L:"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:id="@+id/vibroLenth3"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="T:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/vibroInterval3"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="R:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/vibroRepeat3"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:text="1"
+                android:layout_width="20dp" />
+
+        </LinearLayout>
 
 
         <View
@@ -380,6 +620,82 @@
             android:text="0"
             android:layout_height="50dp"
             />
+
+        <TextView
+            android:text="Громкость"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView104"
+            android:textAlignment="center"
+            android:textColor="@color/bpDark_gray" />
+
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="10"
+            android:id="@+id/volume4"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:text="Вибрация"
+                android:layout_height="wrap_content"
+                android:id="@+id/vibro4"
+                android:layout_weight="1"
+                android:layout_width="70dp" />
+
+            <TextView
+                android:text="L:"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:id="@+id/vibroLenth4"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="T:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="textEnd" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/vibroInterval4"
+                android:layout_weight="1"
+                android:text="1000"
+                android:layout_width="20dp" />
+
+            <TextView
+                android:text="R:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/vibroRepeat4"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                android:text="1"
+                android:layout_width="20dp" />
+
+        </LinearLayout>
 
 
         <Button

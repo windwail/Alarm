@@ -2,31 +2,22 @@ package windwail.ru.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import windwail.ru.alarm.entities.AlarmItem;
 
@@ -70,6 +61,26 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        new AlertDialog.Builder(this)
+                .setTitle("Caution/Предупреждение")
+                .setMessage(
+                        "Эта программа была написана автором для себя, используйте ее на свой страх и риск. Автор снимает с себя ответственность за проблемы связанные с использованием данной программы.\n" +
+                                "This application is distributes as is. It is written for myself and i'm not responsible of problems you'll face using this app. " )
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlarmsList.this.finish();
+                        System.exit(0);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+
     }
 
     @Override
@@ -90,23 +101,42 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     calendar = calendar.withHourOfDay(alarm.getStartHour());
                     calendar = calendar.withSecondOfMinute(0);
 
+                    if(calendar.isBefore(DateTime.now())) {
+                        calendar = calendar.plusDays(1);
+                    }
+
+                    alarm.year = calendar.getYear();
+                    alarm.month = calendar.getMonthOfYear();
+                    alarm.day = calendar.getDayOfMonth();
+
+                    alarm.repeats = 0;
+
                     DateFormat df = DateFormat.getDateTimeInstance();
                     Log.e("ALARM SET:", df.format(calendar.toDate()));
 
                     alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
 
+                    alarmReceiverIntent.putExtra("volume", alarm.getVolume1());
                     alarmReceiverIntent.putExtra("alarm_id", alarm_id);
                     alarmReceiverIntent.putExtra("alarm_file", alarm.file);
-                    alarmReceiverIntent.putExtra("alarmJSON", new Gson().toJson(alarm) );
+                    alarmReceiverIntent.putExtra("alarm_notify", alarm.notifications );
+
+                    alarmReceiverIntent.putExtra("vibro", alarm.getVibro1());
+                    alarmReceiverIntent.putExtra("vrep", alarm.getVibroRepeat1());
+                    alarmReceiverIntent.putExtra("vint", alarm.getVibroInterval1());
+                    alarmReceiverIntent.putExtra("vlen", alarm.getVibroLenth1());
 
                     pendingIntent = PendingIntent.getBroadcast(this, 0,
                             alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
 
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
 
-
+                    alarm.save();
 
                     Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
+
+
+
                 }
 
             }
@@ -121,7 +151,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
     public void onStopAlarm(View v) {
         Intent serviceIntent = new Intent(this, RingtonePlayingService.class);
-        serviceIntent.putExtra("alarm", false);
+        serviceIntent.putExtra("alarm_stop", true);
         startService(serviceIntent);
     }
 

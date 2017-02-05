@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="windwail.ru.alarm">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -10,16 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <uses-permission android:name="android.permission.WAKE_LOCK" />
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
         <meta-data
             android:name="DATABASE"
             android:value="alarm_store.db" />
         <meta-data
             android:name="VERSION"
-            android:value="112" />
+            android:value="119" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
