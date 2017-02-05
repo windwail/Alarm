@@ -70,7 +70,9 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                                     "This application is distributes as is. It is written for myself and i'm not responsible of problems you'll face using this app. ")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            AlarmConfig.getInstance().setRulesAccepted(true);
+                            AlarmConfig instance = AlarmConfig.getInstance();
+                            instance.setRulesAccepted(true);
+                            instance.save();
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
