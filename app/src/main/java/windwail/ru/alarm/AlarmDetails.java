@@ -353,6 +353,8 @@ public class AlarmDetails extends AppCompatActivity {
 
         alarm.save();
 
+        Toast.makeText(this, "СОХРАНЕНО", Toast.LENGTH_SHORT).show();
+
     }
 
     public void onSetAlarm(View v) {

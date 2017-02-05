@@ -203,6 +203,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
 
         Log.e("ALARM SET:", ""+df.format(calendar.toDate())+" VOLUME"+volume);
-        Toast.makeText(context, "ALARM SET:"+df.format(calendar.toDate())+" VOLUME"+volume, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "ALARM SET:"+df.format(calendar.toDate())+" VOLUME"+volume, Toast.LENGTH_LONG).show();
     }
 }
