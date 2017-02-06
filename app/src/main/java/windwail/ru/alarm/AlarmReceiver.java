@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
+import android.os.PowerManager;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 
@@ -30,6 +32,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     Intent alarmReceiverIntent;
     PendingIntent pendingIntent;
 
+
+
     public AlarmReceiver() {
 
     }
@@ -37,11 +41,22 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        PowerManager.WakeLock wakeLock;
+
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |
+                PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                PowerManager.ON_AFTER_RELEASE, AlarmsList.APP_TAG);
+        wakeLock.acquire();
+
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         long alarm_id = intent.getLongExtra("alarm_id", -1);
         String alarm_file = intent.getStringExtra("alarm_file");
         int volume = intent.getIntExtra("volume", 10);
+
+        FileUtil.logTime();
+        FileUtil.log("Alarm received: "+alarm_id);
 
         AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
 
@@ -166,8 +181,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.e("PASSED","PASSED");
         }
 
-
-
+        if (wakeLock != null) wakeLock.release(); wakeLock = null;
     }
 
     private void setAlarm(Context context, AlarmManager alarmManager, AlarmItem alarm, int minutes, int volume, boolean vibro, int vlen, int vrep, int vint) {
@@ -189,7 +203,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         alarmReceiverIntent.putExtra("alarm_id", alarm.getId());
         alarmReceiverIntent.putExtra("alarm_file", alarm.file);
-        alarmReceiverIntent.putExtra("alarmJSON", new Gson().toJson(alarm) );
         alarmReceiverIntent.putExtra("volume",  volume);
         alarmReceiverIntent.putExtra("vibro",  vibro);
         alarmReceiverIntent.putExtra("vlen",  vlen);
@@ -200,7 +213,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         pendingIntent = PendingIntent.getBroadcast(context, 0,
                 alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+        if(Build.VERSION.SDK_INT < 23){
+            if(Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+        }
 
         Log.e("ALARM SET:", ""+df.format(calendar.toDate())+" VOLUME"+volume);
         //Toast.makeText(context, "ALARM SET:"+df.format(calendar.toDate())+" VOLUME"+volume, Toast.LENGTH_LONG).show();

@@ -16,13 +16,12 @@
         android:theme="@style/AppTheme">
 
 
-
         <meta-data
             android:name="DATABASE"
             android:value="alarm_store.db" />
         <meta-data
             android:name="VERSION"
-            android:value="119" />
+            android:value="220" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

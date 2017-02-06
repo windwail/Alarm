@@ -24,6 +24,9 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
     Context context;
 
     public void updateAlarms() {
+        if(alarms != null) {
+            alarms.clear();
+        }
         alarms = AlarmItem.listAll(AlarmItem.class);
         notifyDataSetChanged();
     }

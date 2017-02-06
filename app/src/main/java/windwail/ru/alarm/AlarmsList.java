@@ -1,10 +1,16 @@
 package windwail.ru.alarm;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +18,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.joda.time.DateTime;
 
@@ -28,6 +41,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
     public static final int NEW_ALARM = 1000;
 
     public static String TAG = "AlarmList";
+    public static String APP_TAG = "Alarm";
 
     AlarmListAdapter adapter;
 
@@ -46,6 +60,25 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarms_list);
+
+
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.VIBRATE
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+            }
+        }).check();
 
         try {
             alarms = AlarmItem.listAll(AlarmItem.class);
@@ -135,7 +168,19 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     pendingIntent = PendingIntent.getBroadcast(this, 0,
                             alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
 
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+
+
+                    if(Build.VERSION.SDK_INT < 23){
+                        if(Build.VERSION.SDK_INT >= 19) {
+                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+                        } else {
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+                        }
+                    } else {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
+                    }
+
+
 
                     alarm.save();
 
@@ -203,4 +248,5 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         startActivityForResult(myIntent, NEW_ALARM);
     }
+
 }
