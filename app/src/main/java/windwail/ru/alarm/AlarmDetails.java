@@ -359,6 +359,12 @@ public class AlarmDetails extends AppCompatActivity {
 
     public void onSetAlarm(View v) {
 
+        if (audioFile.getText().toString().trim().length() <= 0
+                && !notify.isChecked() && !vibro1.isChecked()) {
+            Toast.makeText(this, "Не указан файл|вибро|нотификация", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         onSaveAlarm(v);
 
         Intent intent = this.getIntent();

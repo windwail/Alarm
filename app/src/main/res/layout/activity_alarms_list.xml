@@ -36,5 +36,5 @@
         android:text="Остановить"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onSaveFile" />
+        android:onClick="onStopAlarm" />
 </RelativeLayout>

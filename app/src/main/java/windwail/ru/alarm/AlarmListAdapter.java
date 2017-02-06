@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Iterator;
 import java.util.List;
 
 import windwail.ru.alarm.entities.AlarmItem;
@@ -19,16 +20,13 @@ import windwail.ru.alarm.entities.AlarmItem;
  */
 public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
-    List<AlarmItem> alarms;
+    private List<AlarmItem> alarms;
 
     Context context;
 
-    public void updateAlarms() {
-        if(alarms != null) {
-            alarms.clear();
-        }
-        alarms = AlarmItem.listAll(AlarmItem.class);
-        notifyDataSetChanged();
+
+    public void add(AlarmItem ai) {
+        alarms.add(ai);
     }
 
     public AlarmListAdapter(Context context, int resource, List<AlarmItem> processes) {
@@ -53,14 +51,15 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        Log.e("DELET", ""+position);
         View row;
         row = convertView;
 
-        AlarmItem alarm = alarms.get(position);
+        final AlarmItem alarm = alarms.get(position);
 
         final DataHandler handler;
-        if (convertView == null) {
+        //if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.alarm_item, parent, false);
 
@@ -74,15 +73,26 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handler.alarm.delete();
-                    AlarmListAdapter.this.updateAlarms();
+
+                        Iterator<AlarmItem> aiter = alarms.iterator();
+                        Log.e("TRY DELETE", ""+handler.alarm.getId());
+
+                        while(aiter.hasNext()) {
+                            AlarmItem item = aiter.next();
+                            if(handler.alarm.getId() == item.getId()) {
+                                alarm.delete();
+                                aiter.remove();
+                            }
+                        }
+
+                        AlarmListAdapter.this.notifyDataSetChanged();
                 }
             });
 
             row.setTag(handler);
-        } else {
-            handler = (DataHandler) row.getTag();
-        }
+        //} else {
+        //    handler = (DataHandler) row.getTag();
+        //}
 
         handler.alarmName.setText(alarm.getTitle());
         handler.alarmInfo.setText(pad(alarm.getStartHour()) + ":" + pad(alarm.getStartMinute()));

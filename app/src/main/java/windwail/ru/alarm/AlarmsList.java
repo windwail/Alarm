@@ -127,7 +127,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         if (requestCode == NEW_ALARM) {
             if (resultCode == RESULT_OK) {
-                adapter.updateAlarms();
+
 
                 long alarm_id = data.getLongExtra("alarm_id",  -1);
 
@@ -184,9 +184,14 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                     alarm.save();
 
+                    alarm.title = "Будильник" + alarm.getId();
+
+                    alarm.save();
+
                     //Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
 
-
+                    adapter.add(alarm);
+                    adapter.notifyDataSetChanged();
 
                 }
 
