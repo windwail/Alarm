@@ -191,7 +191,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     //Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
 
                     adapter.add(alarm);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetInvalidated();
 
                 }
 

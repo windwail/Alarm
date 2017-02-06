@@ -26,6 +26,12 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
 
     public void add(AlarmItem ai) {
+
+        for(AlarmItem i: alarms) {
+            if(ai.getId()==i.getId()) {
+                return;
+            }
+        }
         alarms.add(ai);
     }
 
