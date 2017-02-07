@@ -25,10 +25,16 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
     Context context;
 
 
-    public void add(AlarmItem ai) {
+    public void updateAll() {
+        for(int i=0; i<alarms.size(); i++) {
+            alarms.set(i, AlarmItem.findById(AlarmItem.class, alarms.get(i).getId()));
+        }
+    }
 
-        for(AlarmItem i: alarms) {
-            if(ai.getId()==i.getId()) {
+    public void add(AlarmItem ai) {
+        for(int i=0; i<alarms.size(); i++) {
+            if(ai.getId()==alarms.get(i).getId()) {
+                alarms.set(i, ai);
                 return;
             }
         }
@@ -58,7 +64,6 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Log.e("DELET", ""+position);
         View row;
         row = convertView;
 
@@ -91,7 +96,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
                             }
                         }
 
-                        AlarmListAdapter.this.notifyDataSetChanged();
+                        AlarmListAdapter.this.notifyDataSetInvalidated();
                 }
             });
 
@@ -101,7 +106,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
         //}
 
         handler.alarmName.setText(alarm.getTitle());
-        handler.alarmInfo.setText(pad(alarm.getStartHour()) + ":" + pad(alarm.getStartMinute()));
+        handler.alarmInfo.setText(alarm.getNext());
 
         return row;
     }

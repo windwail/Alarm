@@ -11,30 +11,37 @@
     tools:context="windwail.ru.alarm.AlarmsList">
 
     <Button
-        android:text="Добавить будильник"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stopAlarm"
+        android:text="Остановить"
+        android:layout_alignParentEnd="true"
+        android:onClick="onStopAlarm"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:text="Добавить"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addButton"
         android:onClick="onAdd"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/stopAlarm" />
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Обновить"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onRefresh" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/alarms"
         android:clickable="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/addButton" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stopAlarm"
-        android:text="Остановить"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onStopAlarm" />
+        android:layout_above="@+id/stopAlarm"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

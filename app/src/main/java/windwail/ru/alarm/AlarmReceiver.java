@@ -197,7 +197,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         calendar = calendar.plusMinutes(minutes);
 
         DateFormat df = DateFormat.getDateTimeInstance();
+        alarm.next = df.format(calendar.toDate());
+
+        alarm.save();
+
         Log.e("ALARM SET:", df.format(calendar.toDate()));
+        FileUtil.log("ALARM "+alarm.getId()+" NAME:" + alarm.title + " TIME:"+df.format(calendar.toDate()));
 
         alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
 

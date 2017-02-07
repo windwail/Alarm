@@ -1,5 +1,6 @@
 package windwail.ru.alarm;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -104,6 +105,10 @@ public class AlarmDetails extends AppCompatActivity {
     private CheckBox notify;
 
     private boolean isPlaying;
+
+    private PendingIntent displayIntent;
+
+    private Button setAlarmButton ;
 
 
     private void setRepeatSectionsFromAlarm() {
@@ -213,6 +218,8 @@ public class AlarmDetails extends AppCompatActivity {
         vibroRepeat3 = (TextView) findViewById(R.id.vibroRepeat3);
         vibroRepeat4 = (TextView) findViewById(R.id.vibroRepeat4);
 
+        setAlarmButton = (Button) findViewById(R.id.setAlarmButton);
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -297,6 +304,17 @@ public class AlarmDetails extends AppCompatActivity {
             vibroRepeat4.setText(""+alarm.getVibroRepeat4());
 
 
+            Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
+            alarmIntent.setData(Uri.parse("custom://" + alarm.getId()));
+            alarmIntent.setAction(String.valueOf(alarm.getId()));
+
+
+            displayIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
+
+
+            //alarmManager.cancel(displayIntent);
+
+
         }
 
         alarmHour.setValue(alarm.getStartHour());
@@ -312,6 +330,9 @@ public class AlarmDetails extends AppCompatActivity {
         sectionCount2.addTextChangedListener(textWatcher);
         sectionCount3.addTextChangedListener(textWatcher);
         sectionCount4.addTextChangedListener(textWatcher);
+
+
+
 
     }
 
@@ -357,6 +378,19 @@ public class AlarmDetails extends AppCompatActivity {
 
     }
 
+    public void onUnsetAlarm(View v) {
+        Intent intent = this.getIntent();
+        intent.putExtra("alarm_id", alarm.getId());
+
+        if(displayIntent != null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.cancel(displayIntent);
+        }
+
+        this.setResult(RESULT_CANCELED, intent);
+        finish();
+    }
+
     public void onSetAlarm(View v) {
 
         if (audioFile.getText().toString().trim().length() <= 0
@@ -367,11 +401,11 @@ public class AlarmDetails extends AppCompatActivity {
 
         onSaveAlarm(v);
 
-        Intent intent = this.getIntent();
-        intent.putExtra("alarm_id", alarm.getId());
+            Intent intent = this.getIntent();
+            intent.putExtra("alarm_id", alarm.getId());
 
-        this.setResult(RESULT_OK, intent);
-        finish();
+            this.setResult(RESULT_OK, intent);
+            finish();
     }
 
     public void onSetStartTime(View v) {

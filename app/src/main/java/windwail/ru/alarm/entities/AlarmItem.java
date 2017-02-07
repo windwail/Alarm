@@ -9,6 +9,8 @@ public class AlarmItem extends SugarRecord {
     public Integer startMinute = 0;
     public String file= "";
 
+    public String next;
+
     public Integer year;
     public Integer month;
     public Integer day;
@@ -412,5 +414,13 @@ public class AlarmItem extends SugarRecord {
 
     public void setVibroRepeat4(Integer vibroRepeat4) {
         this.vibroRepeat4 = vibroRepeat4;
+    }
+
+    public String getNext() {
+        return next;
+    }
+
+    public void setNext(String next) {
+        this.next = next;
     }
 }

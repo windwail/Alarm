@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -150,8 +151,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                     alarm.repeats = 0;
 
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    Log.e("ALARM SET:", df.format(calendar.toDate()));
+
 
                     alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
 
@@ -165,10 +165,20 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     alarmReceiverIntent.putExtra("vint", alarm.getVibroInterval1());
                     alarmReceiverIntent.putExtra("vlen", alarm.getVibroLenth1());
 
+
+                    DateFormat df = DateFormat.getDateTimeInstance();
+                    alarm.next = df.format(calendar.toDate());
+
+                    alarm.save();
+
+                    Log.e("ALARM SET:", df.format(calendar.toDate()));
+                    FileUtil.log("ALARM "+alarm.getId()+" NAME:" + alarm.title + " TIME:"+df.format(calendar.toDate()));
+
+                    alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));
+                    alarmReceiverIntent.setAction(String.valueOf(alarm.getId()));
+
                     pendingIntent = PendingIntent.getBroadcast(this, 0,
                             alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
-
-
 
                     if(Build.VERSION.SDK_INT < 23){
                         if(Build.VERSION.SDK_INT >= 19) {
@@ -181,22 +191,41 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     }
 
 
-
-                    alarm.save();
-
-                    alarm.title = "Будильник" + alarm.getId();
-
-                    alarm.save();
-
                     //Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
 
                     adapter.add(alarm);
-                    adapter.notifyDataSetInvalidated();
+                    adapter.notifyDataSetChanged();
+
+                }
+
+            } else if (resultCode == RESULT_CANCELED){
+
+                if(data == null) {
+                    return;
+                }
+
+                long alarm_id = data.getLongExtra("alarm_id",  -1);
+
+                if(alarm_id >= 0) {
+                    AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
+
+                    alarm.next = "";
+                    alarm.save();
+
+                    adapter.add(alarm);
+                    adapter.notifyDataSetChanged();
+
+                    Toast.makeText(this, "ОТМЕНЕНО", Toast.LENGTH_SHORT).show();
 
                 }
 
             }
         }
+    }
+
+    public void onRefresh(View v) {
+        adapter.updateAll();
+        adapter.notifyDataSetChanged();
     }
 
     public void onAdd(View v){
