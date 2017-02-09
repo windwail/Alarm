@@ -137,6 +137,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                     DateTime calendar = DateTime.now();
 
+                    /*
                     calendar = calendar.withMinuteOfHour(alarm.getStartMinute());
                     calendar = calendar.withHourOfDay(alarm.getStartHour());
                     calendar = calendar.withSecondOfMinute(0);
@@ -150,11 +151,13 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     alarm.day = calendar.getDayOfMonth();
 
                     alarm.repeats = 0;
+                    */
 
 
 
                     alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
 
+                    /*
                     alarmReceiverIntent.putExtra("volume", alarm.getVolume1());
                     alarmReceiverIntent.putExtra("alarm_id", alarm_id);
                     alarmReceiverIntent.putExtra("alarm_file", alarm.file);
@@ -164,21 +167,22 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     alarmReceiverIntent.putExtra("vrep", alarm.getVibroRepeat1());
                     alarmReceiverIntent.putExtra("vint", alarm.getVibroInterval1());
                     alarmReceiverIntent.putExtra("vlen", alarm.getVibroLenth1());
+                    */
 
 
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    alarm.next = df.format(calendar.toDate());
+                    //DateFormat df = DateFormat.getDateTimeInstance();
+                    //alarm.next = df.format(calendar.toDate());
 
                     alarm.save();
 
-                    Log.e("ALARM SET:", df.format(calendar.toDate()));
-                    FileUtil.log("ALARM "+alarm.getId()+" NAME:" + alarm.title + " TIME:"+df.format(calendar.toDate()));
+                    //Log.e("ALARM SET:", df.format(calendar.toDate()));
+                    //FileUtil.log("ALARM "+alarm.getId()+" NAME:" + alarm.title + " TIME:"+df.format(calendar.toDate()));
 
                     alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));
                     alarmReceiverIntent.setAction(String.valueOf(alarm.getId()));
 
                     pendingIntent = PendingIntent.getBroadcast(this, 0,
-                            alarmReceiverIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
+                            alarmReceiverIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
                     if(Build.VERSION.SDK_INT < 23){
                         if(Build.VERSION.SDK_INT >= 19) {
@@ -209,7 +213,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                 if(alarm_id >= 0) {
                     AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
 
-                    alarm.next = "";
+                    //alarm.next = "";
                     alarm.save();
 
                     adapter.add(alarm);

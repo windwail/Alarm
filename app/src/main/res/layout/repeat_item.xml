@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:text="Громкость"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView104"
+        android:textAlignment="center"
+        android:textColor="@color/bpDark_gray"
+ />
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="10"
+        android:id="@+id/volume"
+        android:layout_below="@+id/textView104"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:id="@+id/repeat"
+        android:layout_below="@+id/volume"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="К-во повторов:"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/repeatCount"
+            android:text="0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_width="30dp" />
+
+        <TextView
+            android:text="Интервал:"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:gravity="center_vertical"/>
+
+        <EditText
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/repeatInterval"
+            android:text="0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_width="60dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/vibroLinearLayout"
+        android:layout_below="@+id/repeat"
+        android:layout_alignParentStart="true">
+
+        <CheckBox
+            android:text="Вибрация"
+            android:layout_height="wrap_content"
+            android:id="@+id/vibro"
+            android:layout_weight="1"
+            android:layout_width="70dp" />
+
+        <TextView
+            android:text="L:"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content" />
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:id="@+id/vibroLen"
+            android:layout_weight="1"
+            android:text="1000"
+            android:layout_width="20dp" />
+
+        <TextView
+            android:text="T:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/vibroInt"
+            android:layout_weight="1"
+            android:text="1000"
+            android:layout_width="20dp" />
+
+        <TextView
+            android:text="R:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/vibroRep"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:text="1"
+            android:layout_width="20dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="00:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/nextTime" />
+
+    <CheckBox
+        android:text="Остановка вибро кнопкой"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vibroLinearLayout"
+        android:layout_alignParentStart="true"
+        android:id="@+id/vibroStop" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="34dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:id="@+id/floatingRemove"
+        android:layout_below="@+id/vibroLinearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="11dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:id="@+id/floatingAdd"
+        android:layout_width="34dp"
+        app:backgroundTint="@android:color/holo_green_dark"
+        android:layout_marginEnd="11dp"
+        android:layout_below="@+id/vibroLinearLayout"
+        android:layout_toStartOf="@+id/floatingRemove" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#000000"
+        android:layout_below="@+id/floatingRemove"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+
+</RelativeLayout>

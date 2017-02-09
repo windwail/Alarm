@@ -15,12 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -33,13 +33,14 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 
 import org.joda.time.DateTime;
-import org.joda.time.DurationFieldType;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 import windwail.ru.alarm.entities.AlarmConfig;
 import windwail.ru.alarm.entities.AlarmItem;
+import windwail.ru.alarm.entities.RepeatData;
 
 
 public class AlarmDetails extends AppCompatActivity {
@@ -53,6 +54,8 @@ public class AlarmDetails extends AppCompatActivity {
 
     private AlarmItem alarm;
 
+    private  RepeatData repeat;
+
     private Button playButton;
 
     private EditText audioFile;
@@ -62,45 +65,15 @@ public class AlarmDetails extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
-    private TextView sectionStart1;
-    private TextView sectionStart2;
-    private TextView sectionStart3;
-    private TextView sectionStart4;
-
-    private TextView sectionInterval1;
-    private TextView sectionInterval2;
-    private TextView sectionInterval3;
-    private TextView sectionInterval4;
-
-    private TextView sectionCount1;
-    private TextView sectionCount2;
-    private TextView sectionCount3;
-    private TextView sectionCount4;
-
     private SeekBar volume1;
-    private SeekBar volume2;
-    private SeekBar volume3;
-    private SeekBar volume4;
 
     private CheckBox vibro1;
-    private CheckBox vibro2;
-    private CheckBox vibro3;
-    private CheckBox vibro4;
 
     private TextView vibroLenth1;
-    private TextView vibroLenth2;
-    private TextView vibroLenth3;
-    private TextView vibroLenth4;
 
     private TextView vibroInterval1;
-    private TextView vibroInterval2;
-    private TextView vibroInterval3;
-    private TextView vibroInterval4;
 
     private TextView vibroRepeat1;
-    private TextView vibroRepeat2;
-    private TextView vibroRepeat3;
-    private TextView vibroRepeat4;
 
     private CheckBox notify;
 
@@ -110,28 +83,24 @@ public class AlarmDetails extends AppCompatActivity {
 
     private Button setAlarmButton ;
 
+    private ListView repeatsListView;
+
+    private RepeatsListAdapter repeatsListAdapter;
 
     private void setRepeatSectionsFromAlarm() {
+        /*
         sectionStart1.setText(pad(alarm.getStartHour())+":"+pad(alarm.getStartMinute()));
-        sectionStart2.setText(pad(alarm.getRepeatStartHour2())+":"+pad(alarm.getRepeatStartMinute2()));
-        sectionStart3.setText(pad(alarm.getRepeatStartHour3())+":"+pad(alarm.getRepeatStartMinute3()));
-        sectionStart4.setText(pad(alarm.getRepeatStartHour4())+":"+pad(alarm.getRepeatStartMinute4()));
 
         sectionCount1.setText(""+alarm.getRepeatCount1());
-        sectionCount2.setText(""+alarm.getRepeatCount2());
-        sectionCount3.setText(""+alarm.getRepeatCount3());
-        sectionCount4.setText(""+alarm.getRepeatCount4());
 
         sectionInterval1.setText(""+alarm.getRepeatInterval1());
-        sectionInterval2.setText(""+alarm.getRepeatInterval2());
-        sectionInterval3.setText(""+alarm.getRepeatInterval3());
-        sectionInterval4.setText(""+alarm.getRepeatInterval4());
-
+        */
 
     }
 
     private void setStartSections() {
 
+        /*
         alarm.setRepeatCount1(Integer.parseInt(sectionCount1.getText().toString()));
         alarm.setRepeatCount2(Integer.parseInt(sectionCount2.getText().toString()));
         alarm.setRepeatCount3(Integer.parseInt(sectionCount3.getText().toString()));
@@ -161,6 +130,7 @@ public class AlarmDetails extends AppCompatActivity {
         alarm.setRepeatStartHour4(dt.getHourOfDay());
         alarm.setRepeatStartMinute4(dt.getMinuteOfHour());
         sectionStart4.setText(pad(dt.getHourOfDay())+":"+pad(dt.getMinuteOfHour()));
+        */
 
     }
 
@@ -178,47 +148,14 @@ public class AlarmDetails extends AppCompatActivity {
 
         notify = (CheckBox) findViewById(R.id.notification);
 
-        sectionStart1 = (TextView) findViewById(R.id.sectionStart1);
-        sectionStart2 = (TextView) findViewById(R.id.sectionStart2);
-        sectionStart3 = (TextView) findViewById(R.id.sectionStart3);
-        sectionStart4 = (TextView) findViewById(R.id.sectionStart4);
-
-        sectionInterval1 = (TextView) findViewById(R.id.sectionInterval1);
-        sectionInterval2 = (TextView) findViewById(R.id.sectionInterval2);
-        sectionInterval3 = (TextView) findViewById(R.id.sectionInterval3);
-        sectionInterval4 = (TextView) findViewById(R.id.sectionInterval4);
-
-        sectionCount1 = (TextView) findViewById(R.id.sectionRepeat1);
-        sectionCount2 = (TextView) findViewById(R.id.sectionRepeat2);
-        sectionCount3 = (TextView) findViewById(R.id.sectionRepeat3);
-        sectionCount4 = (TextView) findViewById(R.id.sectionRepeat4);
 
         volume1 = (SeekBar) findViewById(R.id.volume1);
-        volume2 = (SeekBar) findViewById(R.id.volume2);
-        volume3 = (SeekBar) findViewById(R.id.volume3);
-        volume4 = (SeekBar) findViewById(R.id.volume4);
-
         vibro1 = (CheckBox) findViewById(R.id.vibro1);
-        vibro2 = (CheckBox) findViewById(R.id.vibro2);
-        vibro3 = (CheckBox) findViewById(R.id.vibro3);
-        vibro4 = (CheckBox) findViewById(R.id.vibro4);
-
         vibroLenth1 = (TextView) findViewById(R.id.vibroLenth1);
-        vibroLenth2 = (TextView) findViewById(R.id.vibroLenth2);
-        vibroLenth3 = (TextView) findViewById(R.id.vibroLenth3);
-        vibroLenth4 = (TextView) findViewById(R.id.vibroLenth4);
-
         vibroInterval1 = (TextView) findViewById(R.id.vibroInterval1);
-        vibroInterval2 = (TextView) findViewById(R.id.vibroInterval2);
-        vibroInterval3 = (TextView) findViewById(R.id.vibroInterval3);
-        vibroInterval4 = (TextView) findViewById(R.id.vibroInterval4);
-
         vibroRepeat1 = (TextView) findViewById(R.id.vibroRepeat1);
-        vibroRepeat2 = (TextView) findViewById(R.id.vibroRepeat2);
-        vibroRepeat3 = (TextView) findViewById(R.id.vibroRepeat3);
-        vibroRepeat4 = (TextView) findViewById(R.id.vibroRepeat4);
-
         setAlarmButton = (Button) findViewById(R.id.setAlarmButton);
+        repeatsListView = (ListView) findViewById(R.id.repeatsListView);
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -246,9 +183,8 @@ public class AlarmDetails extends AppCompatActivity {
         NumberPicker.OnValueChangeListener updateRepeatTime = new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                sectionStart1.setText(pad(alarmHour.getValue())+":"+pad(alarmMinute.getValue()));
-                alarm.setStartHour(alarmHour.getValue());
-                alarm.setStartMinute(alarmMinute.getValue());
+                repeat.setStartHour(alarmHour.getValue());
+                repeat.setStartMinute(alarmMinute.getValue());
                 setStartSections();
             }
         };
@@ -261,78 +197,50 @@ public class AlarmDetails extends AppCompatActivity {
         if(alarm_id < 0) {
             alarm = new AlarmItem();
 
+            repeat = new RepeatData();
+            repeat.save();
+            alarm.setCurrent(repeat);
+
+            alarm.setRepeats(new ArrayList<RepeatData>());
+            alarm.getRepeats().add(repeat);
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+
+            repeatsListAdapter = new RepeatsListAdapter(this, R.layout.repeat_item, alarm.getRepeats());
+            repeatsListView.setAdapter(repeatsListAdapter);
+
             DateTime dt = DateTime.now();
 
-            alarm.setStartHour(dt.getHourOfDay());
-            alarm.setStartMinute(dt.getMinuteOfHour());
-
+            repeat.setStartHour(dt.getHourOfDay());
+            repeat.setStartMinute(dt.getMinuteOfHour());
 
 
         } else {
             alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
             alarmName.setText(alarm.getTitle());
             //startTime.setText(pad(alarm.startHour)+":"+pad(alarm.startMinute));
-            audioFile.setText(alarm.file);
+            audioFile.setText(repeat.getFile());
 
             setRepeatSectionsFromAlarm();
 
-            notify.setChecked(alarm.notifications);
+            notify.setChecked(repeat.getNotifications());
 
-            volume1.setProgress(alarm.getVolume1());
-            volume2.setProgress(alarm.getVolume2());
-            volume3.setProgress(alarm.getVolume3());
-            volume4.setProgress(alarm.getVolume4());
+            volume1.setProgress(repeat.getVolume());
 
-            vibro1.setChecked(alarm.getVibro1());
-            vibro2.setChecked(alarm.getVibro2());
-            vibro3.setChecked(alarm.getVibro3());
-            vibro4.setChecked(alarm.getVibro4());
+            vibro1.setChecked(repeat.getVibro());
 
-            vibroLenth1.setText(""+alarm.getVibroLenth1());
-            vibroLenth2.setText(""+alarm.getVibroLenth2());
-            vibroLenth3.setText(""+alarm.getVibroLenth3());
-            vibroLenth4.setText(""+alarm.getVibroLenth4());
+            vibroLenth1.setText(""+repeat.getVibroLenth());
 
-            vibroInterval1.setText(""+alarm.getVibroInterval1());
-            vibroInterval2.setText(""+alarm.getVibroInterval2());
-            vibroInterval3.setText(""+alarm.getVibroInterval3());
-            vibroInterval4.setText(""+alarm.getVibroInterval4());
+            vibroInterval1.setText(""+repeat.getVibroInterval());
 
-            vibroRepeat1.setText(""+alarm.getVibroRepeat1());
-            vibroRepeat2.setText(""+alarm.getVibroRepeat2());
-            vibroRepeat3.setText(""+alarm.getVibroRepeat3());
-            vibroRepeat4.setText(""+alarm.getVibroRepeat4());
-
-
-            Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
-            alarmIntent.setData(Uri.parse("custom://" + alarm.getId()));
-            alarmIntent.setAction(String.valueOf(alarm.getId()));
-
-
-            displayIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
-
-
-            //alarmManager.cancel(displayIntent);
-
+            vibroRepeat1.setText(""+repeat.getVibroRepeat());
 
         }
 
-        alarmHour.setValue(alarm.getStartHour());
-        alarmMinute.setValue(alarm.getStartMinute());
-        sectionStart1.setText(pad(alarmHour.getValue())+":"+pad(alarmMinute.getValue()));
-
-        sectionInterval1.addTextChangedListener(textWatcher);
-        sectionInterval2.addTextChangedListener(textWatcher);
-        sectionInterval3.addTextChangedListener(textWatcher);
-        sectionInterval4.addTextChangedListener(textWatcher);
-
-        sectionCount1.addTextChangedListener(textWatcher);
-        sectionCount2.addTextChangedListener(textWatcher);
-        sectionCount3.addTextChangedListener(textWatcher);
-        sectionCount4.addTextChangedListener(textWatcher);
-
-
-
+        alarmHour.setValue(repeat.getStartHour());
+        alarmMinute.setValue(repeat.getStartMinute());
 
     }
 
@@ -344,33 +252,11 @@ public class AlarmDetails extends AppCompatActivity {
             return;
         }
 
-        alarm.title = alarmName.getText().toString();
-        alarm.notifications = notify.isChecked();
+        alarm.setTitle(alarmName.getText().toString());
 
-        alarm.volume1 = volume1.getProgress();
-        alarm.volume2 = volume2.getProgress();
-        alarm.volume3 = volume3.getProgress();
-        alarm.volume4 = volume4.getProgress();
+        repeat.setNotifications(notify.isChecked());
 
-        alarm.setVibro1(vibro1.isChecked());
-        alarm.setVibro2(vibro2.isChecked());
-        alarm.setVibro3(vibro3.isChecked());
-        alarm.setVibro4(vibro4.isChecked());
-
-        alarm.setVibroLenth1(Integer.parseInt(vibroLenth1.getText().toString()));
-        alarm.setVibroLenth2(Integer.parseInt(vibroLenth2.getText().toString()));
-        alarm.setVibroLenth3(Integer.parseInt(vibroLenth3.getText().toString()));
-        alarm.setVibroLenth4(Integer.parseInt(vibroLenth4.getText().toString()));
-
-        alarm.setVibroInterval1(Integer.parseInt(vibroInterval1.getText().toString()));
-        alarm.setVibroInterval2(Integer.parseInt(vibroInterval2.getText().toString()));
-        alarm.setVibroInterval3(Integer.parseInt(vibroInterval3.getText().toString()));
-        alarm.setVibroInterval4(Integer.parseInt(vibroInterval4.getText().toString()));
-
-        alarm.setVibroRepeat1(Integer.parseInt(vibroRepeat1.getText().toString()));
-        alarm.setVibroRepeat2(Integer.parseInt(vibroRepeat2.getText().toString()));
-        alarm.setVibroRepeat3(Integer.parseInt(vibroRepeat3.getText().toString()));
-        alarm.setVibroRepeat4(Integer.parseInt(vibroRepeat4.getText().toString()));
+        // TODO: savign
 
         alarm.save();
 
@@ -418,8 +304,8 @@ public class AlarmDetails extends AppCompatActivity {
         rtpd.setOnTimeSetListener(new RadialTimePickerDialogFragment.OnTimeSetListener() {
             @Override
             public void onTimeSet(RadialTimePickerDialogFragment dialog, int h, int m) {
-                alarm.startHour = h;
-                alarm.startMinute = m;
+                repeat.setStartHour(h);
+                repeat.setStartMinute(m);
                 //startTime.setText(pad(h)+":"+pad(m));
             }
         });
@@ -427,10 +313,10 @@ public class AlarmDetails extends AppCompatActivity {
     }
 
     public void onTestPlay(View v) {
-        if(alarm.file != null && alarm.file != "") {
+        if(repeat.getFile() != null && repeat.getFile() != "") {
             if(!isPlaying) {
                 isPlaying = true;
-                mediaPlayer = MediaPlayer.create(AlarmDetails.this, Uri.parse(alarm.file));
+                mediaPlayer = MediaPlayer.create(AlarmDetails.this, Uri.parse(repeat.getFile()));
                 float fv = ((float)volume1.getProgress())/10f;
                 mediaPlayer.setVolume(fv,fv);
                 playButton.setText("Стоп");
@@ -480,7 +366,7 @@ public class AlarmDetails extends AppCompatActivity {
 
                 Log.e(TAG, files[0]);
                 audioFile.setText(files[0]);
-                alarm.file = files[0];
+                repeat.setFile(files[0]);
             }
         });
 

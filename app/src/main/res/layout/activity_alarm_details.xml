@@ -218,6 +218,12 @@
 
         </LinearLayout>
 
+        <CheckBox
+            android:text="Остановка вибрации кнопкой"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vibroStop" />
+
         <Button
             android:text="Тест вибрации"
             android:layout_width="match_parent"
@@ -287,430 +293,41 @@
                 android:onClick="onSetAlarm"/>
         </LinearLayout>
 
-        <TextView
-            android:text="Повторы"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView5"
-            android:textSize="20sp"
-            android:textColor="#000000"
-            android:layout_marginTop="20dp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="#000000"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:text="02:20"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/sectionStart1"
-            android:layout_marginTop="6dp" />
-
-        <TextView
-            android:text="К-во повторов:"
-            android:id="@+id/sectinRepeatLabel1"
-            android:layout_height="20dp"
-            android:layout_width="wrap_content" />
-
-        <EditText
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionRepeat1"
-            android:layout_width="50dp"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <TextView
-            android:text="Интервал:"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/textView3" />
-
-        <EditText
-            android:layout_width="50dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionInterval1"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="#000000"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-
-        <TextView
-            android:text="02:20"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/sectionStart2"
-            android:layout_marginTop="6dp" />
-
-        <TextView
-            android:text="К-во повторов:"
-            android:id="@+id/sectinRepeatLabel2"
-            android:layout_height="20dp"
-            android:layout_width="wrap_content" />
-
-        <EditText
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionRepeat2"
-            android:layout_width="50dp"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <TextView
-            android:text="Интервал:"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/textView2" />
-
-        <EditText
-            android:layout_width="50dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionInterval2"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <TextView
-            android:text="Громкость"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView102"
-            android:textAlignment="center"
-            android:textColor="@color/bpDark_gray" />
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3"
-            android:id="@+id/volume2"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <CheckBox
-                android:text="Вибрация"
-                android:layout_height="wrap_content"
-                android:id="@+id/vibro2"
-                android:layout_weight="1"
-                android:layout_width="70dp" />
+            android:layout_height="wrap_content">
 
             <TextView
-                android:text="L:"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd"
-                android:layout_width="wrap_content" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:id="@+id/vibroLenth2"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="T:"
+                android:text="Повторы"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/vibroInterval2"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="R:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1" />
 
-            <EditText
+            <Space
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:id="@+id/vibroRepeat2"
-                android:layout_weight="1"
-                android:inputType="numberDecimal"
-                android:text="1"
-                android:layout_width="20dp" />
+                android:layout_weight="3" />
 
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="mini"
+                app:srcCompat="@android:drawable/ic_menu_add"
+                android:id="@+id/addRepeation"
+                app:backgroundTint="@android:color/holo_green_dark" />
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="#000000"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-
-        <TextView
-            android:text="02:20"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/sectionStart3"
-            android:layout_marginTop="6dp" />
-
-        <TextView
-            android:text="К-во повторов:"
-            android:id="@+id/sectinRepeatLabel3"
-            android:layout_height="20dp"
-            android:layout_width="wrap_content" />
-
-        <EditText
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionRepeat3"
-            android:layout_width="50dp"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-
-
-        <TextView
-            android:text="Интервал:"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/textView33" />
-
-        <EditText
-            android:layout_width="50dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionInterval3"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-
-        <TextView
-            android:text="Громкость"
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView103"
-            android:textAlignment="center"
-            android:textColor="@color/bpDark_gray" />
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3"
-            android:id="@+id/volume3"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <CheckBox
-                android:text="Вибрация"
-                android:layout_height="wrap_content"
-                android:id="@+id/vibro3"
-                android:layout_weight="1"
-                android:layout_width="70dp" />
-
-            <TextView
-                android:text="L:"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd"
-                android:layout_width="wrap_content" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:id="@+id/vibroLenth3"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="T:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/vibroInterval3"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="R:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:id="@+id/vibroRepeat3"
-                android:layout_weight="1"
-                android:inputType="numberDecimal"
-                android:text="1"
-                android:layout_width="20dp" />
-
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="#000000"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-
-        <TextView
-            android:text="02:20"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/sectionStart4"
-            android:layout_marginTop="6dp" />
-
-        <TextView
-            android:text="К-во повторов:"
-            android:id="@+id/sectinRepeatLabel4"
-            android:layout_height="20dp"
-            android:layout_width="wrap_content" />
-
-        <EditText
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionRepeat4"
-            android:layout_width="50dp"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <TextView
-            android:text="Интервал:"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/textView4" />
-
-        <EditText
-            android:layout_width="50dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/sectionInterval4"
-            android:text="0"
-            android:layout_height="50dp"
-            />
-
-        <TextView
-            android:text="Громкость"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView104"
-            android:textAlignment="center"
-            android:textColor="@color/bpDark_gray" />
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="10"
-            android:id="@+id/volume4"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <CheckBox
-                android:text="Вибрация"
-                android:layout_height="wrap_content"
-                android:id="@+id/vibro4"
-                android:layout_weight="1"
-                android:layout_width="70dp" />
-
-            <TextView
-                android:text="L:"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd"
-                android:layout_width="wrap_content" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:id="@+id/vibroLenth4"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="T:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/vibroInterval4"
-                android:layout_weight="1"
-                android:text="1000"
-                android:layout_width="20dp" />
-
-            <TextView
-                android:text="R:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:id="@+id/vibroRepeat4"
-                android:layout_weight="1"
-                android:inputType="numberDecimal"
-                android:text="1"
-                android:layout_width="20dp" />
-
-        </LinearLayout>
-
+            android:id="@+id/repeatsListView" />
 
         <LinearLayout
             android:orientation="horizontal"

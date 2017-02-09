@@ -64,6 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
 
+        /*
         Intent serviceIntent = new Intent(context, RingtonePlayingService.class);
         serviceIntent.putExtra("alarm_id", alarm_id);
         serviceIntent.putExtra("alarm", true);
@@ -181,12 +182,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.e("PASSED","PASSED");
         }
 
+*/
         if (wakeLock != null) wakeLock.release(); wakeLock = null;
     }
 
     private void setAlarm(Context context, AlarmManager alarmManager, AlarmItem alarm, int minutes, int volume, boolean vibro, int vlen, int vrep, int vint) {
         DateTime calendar = DateTime.now();
 
+        /*
         calendar = calendar.withMinuteOfHour(alarm.getStartMinute());
         calendar = calendar.withHourOfDay(alarm.getStartHour());
         calendar = calendar.withSecondOfMinute(0);
@@ -230,5 +233,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Log.e("ALARM SET:", ""+df.format(calendar.toDate())+" VOLUME"+volume);
         //Toast.makeText(context, "ALARM SET:"+df.format(calendar.toDate())+" VOLUME"+volume, Toast.LENGTH_LONG).show();
+
+        */
     }
 }

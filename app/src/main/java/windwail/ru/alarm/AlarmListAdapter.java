@@ -106,7 +106,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
         //}
 
         handler.alarmName.setText(alarm.getTitle());
-        handler.alarmInfo.setText(alarm.getNext());
+       /// handler.alarmInfo.setText(alarm.getNext());
 
         return row;
     }
