@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormat;
 import java.util.List;
 
 import windwail.ru.alarm.entities.AlarmItem;
@@ -33,6 +34,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager alarmManager;
     Intent alarmReceiverIntent;
     PendingIntent pendingIntent;
+
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
 
 
     @Override
@@ -126,18 +129,21 @@ public class AlarmReceiver extends BroadcastReceiver {
             plusMinutes += r.getRepeats()*r.getRepeatInterval();
         }
 
+        FileUtil.log("Количество минут от основного времени:" + plusMinutes);
+        Log.e("", "Количество минут от основного времени:" + plusMinutes);
+
         calendar = calendar.plusMinutes(plusMinutes);
 
         if(calendar.isBefore(DateTime.now())) {
             calendar = calendar.plusDays(1);
         }
 
-        DateFormat df = DateFormat.getDateTimeInstance();
-        alarm.setInfo(df.format(calendar.toDate()));
+
+        alarm.setInfo(calendar.toString(fmt));
         alarm.save();
 
-        Log.e("ALARM SET:", df.format(calendar.toDate()));
-        FileUtil.log("Установлен "+alarm.getId()+" NAME:" + alarm.getTitle() + " TIME:"+df.format(calendar.toDate()));
+        Log.e("ALARM SET:", calendar.toString(fmt));
+        FileUtil.log("Установлен "+alarm.getId()+" NAME:" + alarm.getTitle() + " TIME:"+calendar.toString(fmt));
 
         alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
         alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));

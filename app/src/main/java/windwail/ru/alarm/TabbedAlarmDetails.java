@@ -191,6 +191,14 @@ public class TabbedAlarmDetails extends AppCompatActivity {
 
             info = (TextView) rootView.findViewById(R.id.info);
 
+            StringBuilder sb = new StringBuilder();
+
+            for(RepeatData r: alarm.getRepeats()) {
+                sb.append("id:"+r.getId()+" повторов:"+r.getRepeats() + "\n");
+            }
+
+            info.setText(sb.toString());
+
             save = (Button) rootView.findViewById(R.id.saveAlarm);
             set = (Button) rootView.findViewById(R.id.setAlarmButton);
             chooseFile = (Button) rootView.findViewById(R.id.chooseFile);
@@ -322,6 +330,9 @@ public class TabbedAlarmDetails extends AppCompatActivity {
                         AlarmManager am = (AlarmManager) tabbedAlarmDetails.getSystemService(ALARM_SERVICE);
                         PendingIntent pi = getPendingIntent();
 
+                        alarm.setInfo("<ОТКЛЮЧЕН>");
+                        alarm.save();
+
                         if(pi != null) {
                             pi.cancel();
                             am.cancel(pi);
@@ -389,6 +400,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         public void onSaveAlarm(View v) {
             Log.e("SAVE 2", "SAVE 2");
 
+            tabbedAlarmDetails.repeatsFragment.saveAndRemove();
+
             saveFromForm();
 
             alarm.save();
@@ -398,12 +411,16 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             Intent intent = tabbedAlarmDetails.getIntent();
             intent.putExtra("alarm_id", alarm.getId());
 
+            tabbedAlarmDetails.logAlarm();
+
             tabbedAlarmDetails.setResult(RESULT_CANCELED, intent);
             tabbedAlarmDetails.finish();
         }
 
         public void onSetAlarm(View v) {
             Log.e("SAVE 2", "SAVE 2");
+
+            tabbedAlarmDetails.repeatsFragment.saveAndRemove();
 
             saveFromForm();
 
@@ -418,6 +435,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             Toast.makeText(tabbedAlarmDetails, "Сохранено!", Toast.LENGTH_LONG);
             Intent intent = tabbedAlarmDetails.getIntent();
             intent.putExtra("alarm_id", alarm.getId());
+
+            tabbedAlarmDetails.logAlarm();
 
             tabbedAlarmDetails.setResult(RESULT_OK, intent);
             tabbedAlarmDetails.finish();
@@ -490,6 +509,9 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             return rootView;
         }
 
+        public void saveAndRemove() {
+            repeatsListAdapter.saveAndRemove();
+        }
 
         public void onSaveAlarm(View v) {
             tabbedAlarmDetails.alarm.save();
@@ -500,6 +522,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             Toast.makeText(tabbedAlarmDetails, "Сохранено!", Toast.LENGTH_LONG);
             Intent intent = tabbedAlarmDetails.getIntent();
             intent.putExtra("alarm_id", tabbedAlarmDetails.alarm.getId());
+
+            tabbedAlarmDetails.logAlarm();
 
             tabbedAlarmDetails.setResult(RESULT_CANCELED, intent);
             tabbedAlarmDetails.finish();
@@ -514,6 +538,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             Toast.makeText(tabbedAlarmDetails, "Сохранено!", Toast.LENGTH_LONG);
             Intent intent = tabbedAlarmDetails.getIntent();
             intent.putExtra("alarm_id", tabbedAlarmDetails.alarm.getId());
+
+            tabbedAlarmDetails.logAlarm();
 
             tabbedAlarmDetails.setResult(RESULT_OK, intent);
             tabbedAlarmDetails.finish();
@@ -567,6 +593,20 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    public void logAlarm() {
+        FileUtil.log("----- Сохранен будильник: -----");
+
+        FileUtil.log(alarm.toString());
+
+        int cnt = 0;
+        for(RepeatData r: alarm.getRepeats()) {
+            FileUtil.log("----- Повтор:"+ ++cnt +" -----");
+            FileUtil.log(r.toString());
+        }
+
+        FileUtil.log("-------------------------------");
     }
 
 }

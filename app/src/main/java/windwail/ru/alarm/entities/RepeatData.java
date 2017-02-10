@@ -15,7 +15,7 @@ public class RepeatData extends SugarRecord {
     private String file= "";
 
     private Integer repeatCount = 1;
-    private Integer repeatInterval = 0;
+    private Integer repeatInterval = 1;
     private Integer volume = 10;
     private Boolean vibro = false;
     private Integer vibroLenth = 1000;

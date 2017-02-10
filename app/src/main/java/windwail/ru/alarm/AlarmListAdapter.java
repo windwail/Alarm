@@ -28,7 +28,6 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
     public void updateAll() {
         alarms = AlarmItem.listAll(AlarmItem.class);
         notifyDataSetInvalidated();
-
     }
 
     public AlarmItem get(int pos) {

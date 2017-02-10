@@ -28,8 +28,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,8 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
     Intent alarmReceiverIntent;
 
     PendingIntent pendingIntent;
+
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
 
     /** Called when the activity is first created. */
     @Override
@@ -156,13 +159,11 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                     repeat.save();
 
-
-                    DateFormat df = DateFormat.getDateTimeInstance();
-                    alarm.setInfo(df.format(calendar.toDate()));
+                    alarm.setInfo(calendar.toString(fmt));
                     alarm.save();
 
-                    Log.e("ALARM SET:", df.format(calendar.toDate()));
-                    FileUtil.log("Утсановлен будильник "+alarm.getId()+" Repeat:" + repeat.getId() + " TIME:"+df.format(calendar.toDate()));
+                    Log.e("ALARM SET:", calendar.toString(fmt));
+                    FileUtil.log("Утсановлен будильник "+alarm.getId()+" Repeat:" + repeat.getId() + " TIME:"+calendar.toString(fmt));
 
                     alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
                     alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));
@@ -182,9 +183,9 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
                     }
 
-                    Toast.makeText(this, "Будильник установлен! "+df.format(calendar.toDate()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Будильник установлен! "+calendar.toString(fmt), Toast.LENGTH_SHORT).show();
 
-                    adapter.add(alarm);
+                    adapter.updateAll();
                     adapter.notifyDataSetChanged();
 
                 }
@@ -197,6 +198,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                     return;
                 }
 
+                adapter.updateAll();
                 adapter.notifyDataSetChanged();
 
             }
