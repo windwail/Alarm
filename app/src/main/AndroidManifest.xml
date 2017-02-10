@@ -19,7 +19,7 @@
             android:value="alarm_store.db" />
         <meta-data
             android:name="VERSION"
-            android:value="447" />
+            android:value="448" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

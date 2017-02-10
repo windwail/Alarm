@@ -131,7 +131,7 @@ public class RepeatsListAdapter extends ArrayAdapter<RepeatData> {
             handler.vibroRep.removeTextChangedListener(handler.textWatcher);
         }
 
-        handler.nextTime.setText(repeat.getNext());
+        handler.nextTime.setText("");
         handler.volume.setProgress(repeat.getVolume());
         handler.repeatCount.setText(""+repeat.getRepeatCount());
         handler.repeatInterval.setText(""+repeat.getRepeatInterval());

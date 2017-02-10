@@ -24,33 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="Будильник 1"
                 android:ems="10"
                 android:id="@+id/alarmName"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
                 android:textColorLink="#000000"
 
                 android:nextFocusUp="@id/alarmName"
                 android:nextFocusLeft="@id/alarmName"
-                />
-
-            <TextView
-                android:text="Время срабатывания:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView9"
-                android:textSize="15sp"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:fontFamily="sans-serif"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_below="@+id/alarmName"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp" />
+                android:text="." />
 
             <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal"
                 android:layout_below="@+id/textView9"
@@ -294,6 +278,11 @@
                     android:layout_weight="1"
                     android:onClick="onSetAlarm"/>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info" />
 
 
         </LinearLayout>

@@ -14,18 +14,12 @@ public class RepeatData extends SugarRecord {
     private Integer startMinute = 0;
     private String file= "";
 
-    private String next;
-
-    private Integer year;
-    private Integer month;
-    private Integer day;
-
     private Integer repeatCount = 1;
     private Integer repeatInterval = 0;
     private Integer volume = 10;
     private Boolean vibro = false;
     private Integer vibroLenth = 1000;
-    private Integer vibroInterval = 0;
+    private Integer vibroInterval = 500;
     private Integer vibroRepeat = 1;
     private Boolean vibroUntilPressed = false;
 
@@ -62,38 +56,6 @@ public class RepeatData extends SugarRecord {
 
     public void setFile(String file) {
         this.file = file;
-    }
-
-    public String getNext() {
-        return next;
-    }
-
-    public void setNext(String next) {
-        this.next = next;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
     }
 
     public Integer getRepeatCount() {
@@ -182,5 +144,25 @@ public class RepeatData extends SugarRecord {
 
     public void setAlarm(AlarmItem alarm) {
         this.alarm = alarm;
+    }
+
+    @Override
+    public String toString() {
+        return "RepeatData{" +
+                "id=" +getId()+
+                "startHour=" + startHour +
+                ", startMinute=" + startMinute +
+                ", file='" + file + '\'' +
+                ", repeatCount=" + repeatCount +
+                ", repeatInterval=" + repeatInterval +
+                ", volume=" + volume +
+                ", vibro=" + vibro +
+                ", vibroLenth=" + vibroLenth +
+                ", vibroInterval=" + vibroInterval +
+                ", vibroRepeat=" + vibroRepeat +
+                ", vibroUntilPressed=" + vibroUntilPressed +
+                ", repeats=" + repeats +
+                ", notifications=" + notifications +
+                "} ";
     }
 }

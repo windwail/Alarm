@@ -1,5 +1,6 @@
 package windwail.ru.alarm;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -147,6 +148,7 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         private TextView vibroLenth1;
         private TextView vibroInterval1;
         private TextView vibroRepeat1;
+        private TextView info;
         private CheckBox notify;
         private boolean isPlaying;
 
@@ -172,6 +174,9 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             audioFile = (EditText) rootView.findViewById(R.id.fileName);
             playButton = (Button) rootView.findViewById(R.id.playButton);
             alarmName = (EditText) rootView.findViewById(R.id.alarmName);
+
+            alarmName.setText(alarm.getTitle());
+
             alarmHour = (MaterialNumberPicker) rootView.findViewById(R.id.alarmHour);
             alarmMinute = (MaterialNumberPicker) rootView.findViewById(R.id.alarmMinute);
 
@@ -183,6 +188,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             vibroLenth1 = (TextView) rootView.findViewById(R.id.vibroLenth1);
             vibroInterval1 = (TextView) rootView.findViewById(R.id.vibroInterval1);
             vibroRepeat1 = (TextView) rootView.findViewById(R.id.vibroRepeat1);
+
+            info = (TextView) rootView.findViewById(R.id.info);
 
             save = (Button) rootView.findViewById(R.id.saveAlarm);
             set = (Button) rootView.findViewById(R.id.setAlarmButton);
@@ -304,7 +311,42 @@ public class TabbedAlarmDetails extends AppCompatActivity {
 
             restoreFromObject();
 
+            PendingIntent pendingIntent = getPendingIntent();
+
+            if(pendingIntent!=null) {
+                set.setText("ОТКЛЮЧИТЬ");
+
+                set.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlarmManager am = (AlarmManager) tabbedAlarmDetails.getSystemService(ALARM_SERVICE);
+                        PendingIntent pi = getPendingIntent();
+
+                        if(pi != null) {
+                            pi.cancel();
+                            am.cancel(pi);
+                            Toast.makeText(tabbedAlarmDetails,"Будильник отключен!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(tabbedAlarmDetails,"Будильник Не установлен!", Toast.LENGTH_LONG).show();
+                        }
+
+                        tabbedAlarmDetails.setResult(RESULT_CANCELED, tabbedAlarmDetails.getIntent());
+                        tabbedAlarmDetails.finish();
+                    }
+                });
+            }
+
             return rootView;
+        }
+
+        public PendingIntent getPendingIntent() {
+            Intent alarmReceiverIntent = new Intent(tabbedAlarmDetails, AlarmReceiver.class);
+            alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));
+            alarmReceiverIntent.setAction(String.valueOf(alarm.getId()));
+            alarmReceiverIntent.putExtra("alarm_id", alarm.getId());
+
+            return PendingIntent.getBroadcast(tabbedAlarmDetails, alarm.getId().intValue(),
+                    alarmReceiverIntent,  PendingIntent.FLAG_NO_CREATE);
         }
 
         public void restoreFromObject() {
@@ -368,6 +410,11 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             alarm.save();
             repeat.save();
 
+            for(RepeatData r: alarm.getRepeats()) {
+                r.setRepeats(0);
+                r.save();
+            }
+
             Toast.makeText(tabbedAlarmDetails, "Сохранено!", Toast.LENGTH_LONG);
             Intent intent = tabbedAlarmDetails.getIntent();
             intent.putExtra("alarm_id", alarm.getId());
@@ -376,17 +423,6 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             tabbedAlarmDetails.finish();
         }
 
-        public void onPlayAlarm(View v) {
-            Log.e("PLAY", "PLAY");
-        }
-
-        public void onSelectFile(View v) {
-            Log.e("FILE", "FILE");
-        }
-
-        public void onVibroTest(View v) {
-            Log.e("VIBRO", "VIBRO");
-        }
     }
 
     public RepeatsFragment repeatsFragment;
@@ -402,8 +438,6 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         private Button save;
 
         private Button set;
-
-        private FloatingActionButton deleteButton;
 
         public void updateInvalidate() {
             if(repeatsListAdapter != null) {
@@ -535,23 +569,4 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         }
     }
 
-    public void onSaveAlarm(View v) {
-        Log.e("SAVE", "SAVE");
-    }
-
-    public void onSetAlarm(View v) {
-        Log.e("SET", "SET");
-    }
-
-    public void onPlayAlarm(View v) {
-        Log.e("PLAY", "PLAY");
-    }
-
-    public void onSelectFile(View v) {
-        Log.e("FILE", "FILE");
-    }
-
-    public void onVibroTest(View v) {
-        Log.e("VIBRO", "VIBRO");
-    }
 }

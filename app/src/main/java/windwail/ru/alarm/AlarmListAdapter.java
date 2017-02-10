@@ -90,7 +90,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
         }
 
         handler.alarmName.setText(alarm.getTitle());
-        handler.alarmInfo.setText("id:"+alarm.getId());
+        handler.alarmInfo.setText("id:"+alarm.getId()+"   "+alarm.getInfo());
         handler.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

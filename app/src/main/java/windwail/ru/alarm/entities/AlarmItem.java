@@ -8,7 +8,9 @@ import java.util.List;
 
 public class AlarmItem extends SugarRecord {
 
-    private String title;
+    private String title = "";
+
+    private String info = "";
 
     public String getTitle() {
         return title;
@@ -16,6 +18,14 @@ public class AlarmItem extends SugarRecord {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public List<RepeatData> getRepeats() {
@@ -29,8 +39,6 @@ public class AlarmItem extends SugarRecord {
         });
 
         return result;
-
-
     }
 
 }

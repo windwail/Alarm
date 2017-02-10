@@ -34,6 +34,9 @@ public class RingtonePlayingService extends Service {
         int vlen = intent.getIntExtra("vlen", 0);
         int vint = intent.getIntExtra("vint", 0);
 
+        String alarm_file = intent.getStringExtra("alarm_file");
+        int volume = intent.getIntExtra("volume", 10);
+
         if(alarm_stop) {
             for(MediaPlayer p: players) {
                 p.stop();
@@ -48,8 +51,7 @@ public class RingtonePlayingService extends Service {
             showNotiyfy();
         }
 
-        String alarm_file = intent.getStringExtra("alarm_file");
-        int volume = intent.getIntExtra("volume", 10);
+
 
         if(alarm_file == null) {
             return START_NOT_STICKY;

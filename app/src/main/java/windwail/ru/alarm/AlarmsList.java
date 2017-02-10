@@ -129,64 +129,47 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
         if (requestCode == NEW_ALARM) {
             if (resultCode == RESULT_OK) {
-
-
                 Log.e("ALARM", "SET");
-
-                if(true) return;
 
                 long alarm_id = data.getLongExtra("alarm_id",  -1);
 
                 if(alarm_id >= 0) {
                     AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
 
+                    // Сбрасываем счетчики срабатывания.
+                    for(RepeatData r: alarm.getRepeats()) {
+                        r.setRepeats(0);
+                        r.save();
+                    }
+
+                    RepeatData repeat = alarm.getRepeats().get(0);
+
                     DateTime calendar = DateTime.now();
 
-                    /*
-                    calendar = calendar.withMinuteOfHour(alarm.getStartMinute());
-                    calendar = calendar.withHourOfDay(alarm.getStartHour());
+                    calendar = calendar.withMinuteOfHour(repeat.getStartMinute());
+                    calendar = calendar.withHourOfDay(repeat.getStartHour());
                     calendar = calendar.withSecondOfMinute(0);
 
                     if(calendar.isBefore(DateTime.now())) {
                         calendar = calendar.plusDays(1);
                     }
 
-                    alarm.year = calendar.getYear();
-                    alarm.month = calendar.getMonthOfYear();
-                    alarm.day = calendar.getDayOfMonth();
-
-                    alarm.repeats = 0;
-                    */
+                    repeat.save();
 
 
-
-                    alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
-
-                    /*
-                    alarmReceiverIntent.putExtra("volume", alarm.getVolume1());
-                    alarmReceiverIntent.putExtra("alarm_id", alarm_id);
-                    alarmReceiverIntent.putExtra("alarm_file", alarm.file);
-                    alarmReceiverIntent.putExtra("alarm_notify", alarm.notifications );
-
-                    alarmReceiverIntent.putExtra("vibro", alarm.getVibro1());
-                    alarmReceiverIntent.putExtra("vrep", alarm.getVibroRepeat1());
-                    alarmReceiverIntent.putExtra("vint", alarm.getVibroInterval1());
-                    alarmReceiverIntent.putExtra("vlen", alarm.getVibroLenth1());
-                    */
-
-
-                    //DateFormat df = DateFormat.getDateTimeInstance();
-                    //alarm.next = df.format(calendar.toDate());
-
+                    DateFormat df = DateFormat.getDateTimeInstance();
+                    alarm.setInfo(df.format(calendar.toDate()));
                     alarm.save();
 
-                    //Log.e("ALARM SET:", df.format(calendar.toDate()));
-                    //FileUtil.log("ALARM "+alarm.getId()+" NAME:" + alarm.title + " TIME:"+df.format(calendar.toDate()));
+                    Log.e("ALARM SET:", df.format(calendar.toDate()));
+                    FileUtil.log("Утсановлен будильник "+alarm.getId()+" Repeat:" + repeat.getId() + " TIME:"+df.format(calendar.toDate()));
 
+                    alarmReceiverIntent = new Intent(this, AlarmReceiver.class);
                     alarmReceiverIntent.setData(Uri.parse("custom://" + alarm.getId()));
                     alarmReceiverIntent.setAction(String.valueOf(alarm.getId()));
+                    alarmReceiverIntent.putExtra("alarm_id", alarm.getId());
 
-                    pendingIntent = PendingIntent.getBroadcast(this, 0,
+                    pendingIntent = PendingIntent.getBroadcast(this, alarm.getId().intValue(),
                             alarmReceiverIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
                     if(Build.VERSION.SDK_INT < 23){
@@ -199,8 +182,7 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getMillis(), pendingIntent);
                     }
 
-
-                    //Toast.makeText(this, "Будильник '"+alarm.title+"' установлен!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Будильник установлен! "+df.format(calendar.toDate()), Toast.LENGTH_SHORT).show();
 
                     adapter.add(alarm);
                     adapter.notifyDataSetChanged();
@@ -211,27 +193,11 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
                 Log.e("ALARM", "SAVE");
 
-                if(true) return;
-
-
                 if(data == null) {
                     return;
                 }
 
-                long alarm_id = data.getLongExtra("alarm_id",  -1);
-
-                if(alarm_id >= 0) {
-                    AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
-
-                    //alarm.next = "";
-                    alarm.save();
-
-                    adapter.add(alarm);
-                    adapter.notifyDataSetChanged();
-
-                    Toast.makeText(this, "ОТМЕНЕНО", Toast.LENGTH_SHORT).show();
-
-                }
+                adapter.notifyDataSetChanged();
 
             }
         }
@@ -249,6 +215,8 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
         AlarmItem alarm = new AlarmItem();
         alarm.save();
 
+        alarm.setTitle("Будильник "+alarm.getId());
+
         RepeatData repeat = new RepeatData(alarm);
         repeat.setAlarm(alarm);
         repeat.save();
@@ -258,8 +226,6 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
         repeat.setStartMinute(dt.getMinuteOfHour());
         repeat.save();
         alarm.save();
-
-        Log.e("REPEATS:",""+alarm.getRepeats().size());
 
         adapter.updateAll();
         adapter.notifyDataSetChanged();
