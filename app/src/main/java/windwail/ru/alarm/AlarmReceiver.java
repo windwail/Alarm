@@ -51,12 +51,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
+
         long alarm_id = intent.getLongExtra("alarm_id", -1);
 
         FileUtil.logTime();
         FileUtil.log("Сработал будильник: "+alarm_id);
 
         AlarmItem alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
+        RepeatData mainRepeat = alarm.getRepeats().get(0);
 
         if(alarm == null) {
             FileUtil.log("Будильник не найден: "+alarm_id);
@@ -119,8 +121,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         DateTime calendar = DateTime.now();
 
-        calendar = calendar.withMinuteOfHour(current.getStartMinute());
-        calendar = calendar.withHourOfDay(current.getStartHour());
+        calendar = calendar.withMinuteOfHour(mainRepeat.getStartMinute());
+        calendar = calendar.withHourOfDay(mainRepeat.getStartHour());
         calendar = calendar.withSecondOfMinute(0);
 
         int plusMinutes = 0;
