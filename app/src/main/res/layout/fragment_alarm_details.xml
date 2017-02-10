@@ -230,7 +230,8 @@
                 android:text="Тест вибрации"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/vibroTest" />
+                android:id="@+id/vibroTest"
+                android:onClick="onVibroTest" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -253,14 +254,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/playButton"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onPlayAlarm" />
 
                 <Button
                     android:text="Выбрать"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/chooseFile"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onSelectFile" />
             </LinearLayout>
 
 
@@ -280,7 +283,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveAlarm"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onSaveAlarm" />
 
                 <Button
                     android:text="Установить"

@@ -26,9 +26,13 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
 
     public void updateAll() {
-        for(int i=0; i<alarms.size(); i++) {
-            alarms.set(i, AlarmItem.findById(AlarmItem.class, alarms.get(i).getId()));
-        }
+        alarms = AlarmItem.listAll(AlarmItem.class);
+        notifyDataSetInvalidated();
+
+    }
+
+    public AlarmItem get(int pos) {
+        return alarms.get(pos);
     }
 
     public void add(AlarmItem ai) {
@@ -59,7 +63,7 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
     public static class DataHandler {
         TextView alarmName;
         TextView alarmInfo;
-        AlarmItem alarm;
+        Button delete;
     }
 
     @Override
@@ -70,43 +74,39 @@ public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
         final AlarmItem alarm = alarms.get(position);
 
         final DataHandler handler;
-        //if (convertView == null) {
+
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.alarm_item, parent, false);
 
             handler = new DataHandler();
             handler.alarmName = (TextView) row.findViewById(R.id.alarmName);
             handler.alarmInfo = (TextView) row.findViewById(R.id.alarmInfo);
-            handler.alarm = alarm;
-
-            Button delete = (Button) row.findViewById(R.id.deleteAlarm);
-
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                        Iterator<AlarmItem> aiter = alarms.iterator();
-                        Log.e("TRY DELETE", ""+handler.alarm.getId());
-
-                        while(aiter.hasNext()) {
-                            AlarmItem item = aiter.next();
-                            if(handler.alarm.getId() == item.getId()) {
-                                alarm.delete();
-                                aiter.remove();
-                            }
-                        }
-
-                        AlarmListAdapter.this.notifyDataSetInvalidated();
-                }
-            });
+            handler.delete = (Button) row.findViewById(R.id.deleteAlarm);
 
             row.setTag(handler);
-        //} else {
-        //    handler = (DataHandler) row.getTag();
-        //}
+        } else {
+            handler = (DataHandler) row.getTag();
+        }
 
         handler.alarmName.setText(alarm.getTitle());
-       /// handler.alarmInfo.setText(alarm.getNext());
+        handler.alarmInfo.setText("id:"+alarm.getId());
+        handler.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Iterator<AlarmItem> aiter = alarms.iterator();
+                Log.e("TRY DELETE", ""+alarm.getId());
+
+                while(aiter.hasNext()) {
+                    AlarmItem item = aiter.next();
+                    if(alarm.getId() == item.getId()) {
+                        aiter.remove();
+                        alarm.delete();
+                    }
+                }
+                AlarmListAdapter.this.notifyDataSetInvalidated();
+            }
+        });
 
         return row;
     }

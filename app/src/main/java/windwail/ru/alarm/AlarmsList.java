@@ -35,6 +35,7 @@ import java.util.List;
 
 import windwail.ru.alarm.entities.AlarmConfig;
 import windwail.ru.alarm.entities.AlarmItem;
+import windwail.ru.alarm.entities.RepeatData;
 
 public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemClickListener
 {
@@ -130,6 +131,10 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
             if (resultCode == RESULT_OK) {
 
 
+                Log.e("ALARM", "SET");
+
+                if(true) return;
+
                 long alarm_id = data.getLongExtra("alarm_id",  -1);
 
                 if(alarm_id >= 0) {
@@ -204,6 +209,11 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
             } else if (resultCode == RESULT_CANCELED){
 
+                Log.e("ALARM", "SAVE");
+
+                if(true) return;
+
+
                 if(data == null) {
                     return;
                 }
@@ -234,8 +244,28 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
     public void onAdd(View v){
 
-        Intent myIntent = new Intent(v.getContext(), AlarmDetails.class);
-        startActivityForResult(myIntent, NEW_ALARM);
+        Log.e("CREATING NEW", "CREATING NEW");
+
+        AlarmItem alarm = new AlarmItem();
+        alarm.save();
+
+        RepeatData repeat = new RepeatData(alarm);
+        repeat.setAlarm(alarm);
+        repeat.save();
+
+        DateTime dt = DateTime.now();
+        repeat.setStartHour(dt.getHourOfDay());
+        repeat.setStartMinute(dt.getMinuteOfHour());
+        repeat.save();
+        alarm.save();
+
+        Log.e("REPEATS:",""+alarm.getRepeats().size());
+
+        adapter.updateAll();
+        adapter.notifyDataSetChanged();
+
+        //Intent myIntent = new Intent(v.getContext(), AlarmDetails.class);
+        //startActivityForResult(myIntent, NEW_ALARM);
     }
 
     public void onStopAlarm(View v) {
@@ -278,9 +308,9 @@ public class AlarmsList extends AppCompatActivity implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent myIntent = new Intent(view.getContext(), AlarmDetails.class);
+        Intent myIntent = new Intent(view.getContext(), TabbedAlarmDetails.class);
 
-        AlarmItem alarm = ((AlarmListAdapter.DataHandler)view.getTag()).alarm;
+        AlarmItem alarm = adapter.get(position);
 
         myIntent.putExtra("alarm_id",alarm.getId());
 

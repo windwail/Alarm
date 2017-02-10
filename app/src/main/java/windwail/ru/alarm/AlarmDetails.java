@@ -195,18 +195,15 @@ public class AlarmDetails extends AppCompatActivity {
         long alarm_id = getIntent().getLongExtra("alarm_id", -1);
 
         if(alarm_id < 0) {
+
+            if(true) throw new RuntimeException();
+
             alarm = new AlarmItem();
 
-            repeat = new RepeatData();
+            repeat = new RepeatData(alarm);
             repeat.save();
-            alarm.setCurrent(repeat);
 
-            alarm.setRepeats(new ArrayList<RepeatData>());
             alarm.getRepeats().add(repeat);
-            alarm.getRepeats().add(new RepeatData());
-            alarm.getRepeats().add(new RepeatData());
-            alarm.getRepeats().add(new RepeatData());
-            alarm.getRepeats().add(new RepeatData());
 
             repeatsListAdapter = new RepeatsListAdapter(this, R.layout.repeat_item, alarm.getRepeats());
             repeatsListView.setAdapter(repeatsListAdapter);

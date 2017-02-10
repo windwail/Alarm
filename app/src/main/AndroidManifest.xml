@@ -19,7 +19,7 @@
             android:value="alarm_store.db" />
         <meta-data
             android:name="VERSION"
-            android:value="333" />
+            android:value="447" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -50,7 +50,15 @@
         <activity
             android:name=".AlarmsList"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".AlarmDetails"
             android:configChanges="orientation"
@@ -60,23 +68,13 @@
             android:name=".AlarmTest"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".AlarmDetailsTabs"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity android:name=".TabsTest">
 
-        </activity>
         <activity
             android:name=".TabbedAlarmDetails"
             android:label="@string/title_activity_tabbed_alarm_details"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
         </activity>

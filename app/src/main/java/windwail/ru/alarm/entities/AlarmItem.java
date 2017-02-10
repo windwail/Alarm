@@ -2,17 +2,13 @@ package windwail.ru.alarm.entities;
 
 import com.orm.SugarRecord;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AlarmItem extends SugarRecord {
 
     private String title;
-
-    private List<RepeatData> repeats;
-
-    private RepeatData current;
-
-    private RepeatData main;
 
     public String getTitle() {
         return title;
@@ -23,26 +19,18 @@ public class AlarmItem extends SugarRecord {
     }
 
     public List<RepeatData> getRepeats() {
-        return repeats;
+        List<RepeatData> result = RepeatData.find(RepeatData.class, "alarm = ?", this.getId().toString());
+
+        Collections.sort(result, new Comparator<RepeatData>() {
+            @Override
+            public int compare(RepeatData o1, RepeatData o2) {
+                return (o1.getId().compareTo(o2.getId()));
+            }
+        });
+
+        return result;
+
+
     }
 
-    public void setRepeats(List<RepeatData> repeats) {
-        this.repeats = repeats;
-    }
-
-    public RepeatData getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(RepeatData current) {
-        this.current = current;
-    }
-
-    public RepeatData getMain() {
-        return main;
-    }
-
-    public void setMain(RepeatData main) {
-        this.main = main;
-    }
 }

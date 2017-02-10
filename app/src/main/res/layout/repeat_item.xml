@@ -159,18 +159,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="11dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_add"
-        android:id="@+id/floatingAdd"
-        android:layout_width="34dp"
-        app:backgroundTint="@android:color/holo_green_dark"
-        android:layout_marginEnd="11dp"
-        android:layout_below="@+id/vibroLinearLayout"
-        android:layout_toStartOf="@+id/floatingRemove" />
-
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dip"

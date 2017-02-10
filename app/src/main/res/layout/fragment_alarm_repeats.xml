@@ -12,7 +12,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/alarms"
+            android:id="@+id/repeatsListView"
             android:clickable="true"
             android:layout_above="@+id/buttons"
             android:layout_alignParentStart="true" />

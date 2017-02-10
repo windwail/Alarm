@@ -8,6 +8,8 @@ import com.orm.SugarRecord;
 
 public class RepeatData extends SugarRecord {
 
+    private AlarmItem alarm;
+
     private Integer startHour = 0;
     private Integer startMinute = 0;
     private String file= "";
@@ -18,7 +20,7 @@ public class RepeatData extends SugarRecord {
     private Integer month;
     private Integer day;
 
-    private Integer repeatCount = 0;
+    private Integer repeatCount = 1;
     private Integer repeatInterval = 0;
     private Integer volume = 10;
     private Boolean vibro = false;
@@ -30,6 +32,13 @@ public class RepeatData extends SugarRecord {
     private Integer repeats = 0;
 
     private Boolean notifications = false;
+
+    public RepeatData() {
+    }
+
+    public RepeatData(AlarmItem alarm) {
+        this.alarm = alarm;
+    }
 
     public Integer getStartHour() {
         return startHour;
@@ -165,5 +174,13 @@ public class RepeatData extends SugarRecord {
 
     public void setNotifications(Boolean notifications) {
         this.notifications = notifications;
+    }
+
+    public AlarmItem getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(AlarmItem alarm) {
+        this.alarm = alarm;
     }
 }
