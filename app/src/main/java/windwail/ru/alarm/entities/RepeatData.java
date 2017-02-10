@@ -26,7 +26,7 @@ public class RepeatData extends SugarRecord {
     private Boolean vibro = false;
     private Integer vibroLenth = 1000;
     private Integer vibroInterval = 0;
-    private Integer vibroRepeat = 0;
+    private Integer vibroRepeat = 1;
     private Boolean vibroUntilPressed = false;
 
     private Integer repeats = 0;

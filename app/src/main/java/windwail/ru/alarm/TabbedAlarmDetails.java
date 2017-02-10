@@ -149,11 +149,6 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         private TextView vibroRepeat1;
         private CheckBox notify;
         private boolean isPlaying;
-        private PendingIntent displayIntent;
-        private Button setAlarmButton;
-        private ListView repeatsListView;
-        private RepeatsListAdapter repeatsListAdapter;
-        private static final String ARG_ALARM_ID = "section_number";
 
         private Button save, set, play, chooseFile, vibroTest;
 
@@ -188,7 +183,6 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             vibroLenth1 = (TextView) rootView.findViewById(R.id.vibroLenth1);
             vibroInterval1 = (TextView) rootView.findViewById(R.id.vibroInterval1);
             vibroRepeat1 = (TextView) rootView.findViewById(R.id.vibroRepeat1);
-            repeatsListView = (ListView) rootView.findViewById(R.id.repeatsListView);
 
             save = (Button) rootView.findViewById(R.id.saveAlarm);
             set = (Button) rootView.findViewById(R.id.setAlarmButton);
