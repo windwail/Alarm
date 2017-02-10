@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 import windwail.ru.alarm.entities.AlarmItem;
@@ -50,13 +52,39 @@ public class TabbedAlarmDetails extends AppCompatActivity {
 
     private AlarmItem alarm;
 
+    private RepeatData repeat;
 
+    private long alarm_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alarm_id = getIntent().getLongExtra("alarm_id", -1);
+
+        //TODO: temporary solution
+        if(alarm_id < 0) {
+            alarm = new AlarmItem();
+
+            repeat = new RepeatData();
+            repeat.save();
+            alarm.setCurrent(repeat);
+
+            alarm.setRepeats(new ArrayList<RepeatData>());
+            alarm.getRepeats().add(repeat);
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+            alarm.getRepeats().add(new RepeatData());
+
+            DateTime dt = DateTime.now();
+
+            repeat.setStartHour(dt.getHourOfDay());
+            repeat.setStartMinute(dt.getMinuteOfHour());
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_alarm_details2);
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -71,11 +99,10 @@ public class TabbedAlarmDetails extends AppCompatActivity {
 
     }
 
-    private DetailsFragment detailsFragment = new DetailsFragment();
+    private DetailsFragment detailsFragment;
     public static class DetailsFragment extends Fragment {
 
         private FilePickerDialog dialog;
-        private AlarmItem alarm;
         private  RepeatData repeat;
         private Button playButton;
         private EditText audioFile;
@@ -95,10 +122,15 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         private RepeatsListAdapter repeatsListAdapter;
         private static final String ARG_ALARM_ID = "section_number";
 
-        public static DetailsFragment newInstance(int alarmId) {
+        private Button save, set, play, chooseFile, vibroTest;
+
+        private TabbedAlarmDetails tabbedAlarmDetails;
+
+        public static DetailsFragment newInstance(long alarmId, TabbedAlarmDetails ta) {
             DetailsFragment fragment = new DetailsFragment();
+            fragment.tabbedAlarmDetails = ta;
             Bundle args = new Bundle();
-            args.putInt(ALARM_ID, alarmId);
+            args.putLong(ALARM_ID, alarmId);
             fragment.setArguments(args);
             return fragment;
         }
@@ -107,7 +139,7 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            long alarm_id = getArguments().getInt(ALARM_ID);
+            //long alarm_id = getArguments().getLong(ALARM_ID);
 
             View rootView = inflater.inflate(R.layout.fragment_alarm_details, container, false);
 
@@ -119,14 +151,26 @@ public class TabbedAlarmDetails extends AppCompatActivity {
 
             notify = (CheckBox) rootView.findViewById(R.id.notification);
 
-
             volume1 = (SeekBar) rootView.findViewById(R.id.volume1);
             vibro1 = (CheckBox) rootView.findViewById(R.id.vibro1);
             vibroLenth1 = (TextView) rootView.findViewById(R.id.vibroLenth1);
             vibroInterval1 = (TextView) rootView.findViewById(R.id.vibroInterval1);
             vibroRepeat1 = (TextView) rootView.findViewById(R.id.vibroRepeat1);
-            setAlarmButton = (Button) rootView.findViewById(R.id.setAlarmButton);
             repeatsListView = (ListView) rootView.findViewById(R.id.repeatsListView);
+
+            save = (Button) rootView.findViewById(R.id.saveAlarm);
+            set = (Button) rootView.findViewById(R.id.setAlarmButton);
+            chooseFile = (Button) rootView.findViewById(R.id.chooseFile);
+            play = (Button) rootView.findViewById(R.id.playButton);
+            vibroTest = (Button) rootView.findViewById(R.id.vibroTest);
+
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preSave();
+                    onSaveAlarm(null);
+                }
+            });
 
             TextWatcher textWatcher = new TextWatcher() {
                 @Override
@@ -142,8 +186,8 @@ public class TabbedAlarmDetails extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     try{
-                        Integer.parseInt(s.toString());
-                        setStartSections();
+                        //Integer.parseInt(s.toString());
+                        //setStartSections();
                     } catch (Exception ex) {
 
                     }
@@ -163,59 +207,67 @@ public class TabbedAlarmDetails extends AppCompatActivity {
             alarmMinute.setOnValueChangedListener(updateRepeatTime);
             alarmHour.setOnValueChangedListener(updateRepeatTime);
 
-            long alarm_id = getIntent().getLongExtra("alarm_id", -1);
 
-            if(alarm_id < 0) {
-                alarm = new AlarmItem();
+            AlarmItem alarm = tabbedAlarmDetails.alarm;
+            RepeatData repeat = tabbedAlarmDetails.repeat;
 
-                repeat = new RepeatData();
-                repeat.save();
-                alarm.setCurrent(repeat);
-
-                alarm.setRepeats(new ArrayList<RepeatData>());
-                alarm.getRepeats().add(repeat);
-                alarm.getRepeats().add(new RepeatData());
-                alarm.getRepeats().add(new RepeatData());
-                alarm.getRepeats().add(new RepeatData());
-                alarm.getRepeats().add(new RepeatData());
-
-                repeatsListAdapter = new RepeatsListAdapter(this, R.layout.repeat_item, alarm.getRepeats());
-                repeatsListView.setAdapter(repeatsListAdapter);
-
-                DateTime dt = DateTime.now();
-
-                repeat.setStartHour(dt.getHourOfDay());
-                repeat.setStartMinute(dt.getMinuteOfHour());
-
-
-            } else {
-                alarm = AlarmItem.findById(AlarmItem.class, alarm_id);
                 alarmName.setText(alarm.getTitle());
                 //startTime.setText(pad(alarm.startHour)+":"+pad(alarm.startMinute));
                 audioFile.setText(repeat.getFile());
-                //setRepeatSectionsFromAlarm();
+                //setRepeatSectionsFromAlarm();T
                 notify.setChecked(repeat.getNotifications());
                 volume1.setProgress(repeat.getVolume());
                 vibro1.setChecked(repeat.getVibro());
                 vibroLenth1.setText(""+repeat.getVibroLenth());
                 vibroInterval1.setText(""+repeat.getVibroInterval());
                 vibroRepeat1.setText(""+repeat.getVibroRepeat());
-            }
 
             alarmHour.setValue(repeat.getStartHour());
             alarmMinute.setValue(repeat.getStartMinute());
 
             return rootView;
         }
+
+
+        private void preSave() {
+
+            AlarmItem a = tabbedAlarmDetails.alarm;
+
+            a.setTitle(alarmName.getText().toString());
+
+            List<RepeatData> r = a.getRepeats();
+
+            RepeatData main = r.get(0);
+
+        }
+
+        public void onSaveAlarm(View v) {
+            Log.e("SAVE","SAVE");
+        }
     }
 
-    public RepeatsFragment repeatsFragment = new RepeatsFragment();
+    public RepeatsFragment repeatsFragment ;
     public static class RepeatsFragment extends Fragment {
+
+        private TabbedAlarmDetails tabbedAlarmDetails;
+
+        public static RepeatsFragment newInstance(long alarmId, TabbedAlarmDetails ta) {
+            RepeatsFragment fragment = new RepeatsFragment();
+            fragment.tabbedAlarmDetails = ta;
+            Bundle args = new Bundle();
+            args.putLong(ALARM_ID, alarmId);
+            fragment.setArguments(args);
+            return fragment;
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_alarm_repeats, container, false);
+
+
+            //repeatsListAdapter = new RepeatsListAdapter(tabbedAlarmDetails, R.layout.repeat_item, alarm.getRepeats());
+            //repeatsListView.setAdapter(repeatsListAdapter);
             return rootView;
         }
     }
@@ -233,8 +285,18 @@ public class TabbedAlarmDetails extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if(position == 0) {
+
+                if(detailsFragment == null) {
+                    detailsFragment = DetailsFragment.newInstance(alarm_id, TabbedAlarmDetails.this);
+                }
+
                 return detailsFragment;
             } else {
+
+                if(repeatsFragment == null ) {
+                    repeatsFragment = RepeatsFragment.newInstance(alarm_id, TabbedAlarmDetails.this);
+                }
+
                 return repeatsFragment;
             }
         }
